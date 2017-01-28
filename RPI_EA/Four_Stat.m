@@ -260,66 +260,69 @@ if PairwiseSwitch == 0
     for i=1:TotalComp
         HomeSet = GroupResults(i,1);
         AwaySet = GroupResults(i,2);
-        if (HomeSet == AwaySet) && (GroupNorma(HomeSet+1,1)~=1) && (GroupNorma(AwaySet+1,1)~=1)
-            %Since testing is pairwise, only 'Before' and 'After' instances
-            %of the same group sets and be compared
-            
-            %Construct First set of measurements
-            j = 1;
-            if GroupMeasures(HomeSet+1,j,1) == -1
-                TheseMeasures1 = NaN;
-            else
-                q=1;
-                while (j<=DataLength)    %While measure is within the range
-                    %Record non-null measurements into TheseMeasures
-                    if (GroupMeasures(HomeSet+1,j,1) ~= -1)
-                        TheseMeasures1(q) = GroupMeasures(HomeSet+1,j,1);
-                        q=q+1;
-                    else
-                        TheseMeasure1(q) = NaN;
-                        q=q+1;
+        if (HomeSet == AwaySet)
+            if (GroupNorma(HomeSet+1,1)~=1) && (GroupNorma(AwaySet+1,1)~=1)
+                %Since testing is pairwise, only 'Before' and 'After' instances
+                %of the same group sets and be compared
+                
+                %Construct First set of measurements
+                j = 1;
+                if GroupMeasures(HomeSet+1,j,1) == -1
+                    TheseMeasures1 = NaN;
+                else
+                    q=1;
+                    while (j<=DataLength)    %While measure is within the range
+                        %Record non-null measurements into TheseMeasures
+                        if (GroupMeasures(HomeSet+1,j,1) ~= -1)
+                            TheseMeasures1(q) = GroupMeasures(HomeSet+1,j,1);
+                            q=q+1;
+                        else
+                            TheseMeasure1(q) = NaN;
+                            q=q+1;
+                        end
+                        j = j+1;
                     end
-                    j = j+1;
                 end
-            end
-            clear j
-            %Construct Second set of measurements
-            j = 1;
-            if GroupMeasures(AwaySet+1,j,2) == -1
-                TheseMeasures2 = NaN;
-            else
-                q=1;
-                while (j<=DataLength)    %While measure is within the range
-                    %Record non-null measurements into TheseMeasures
-                    if (GroupMeasures(AwaySet+1,j,2) ~= -1)
-                        TheseMeasures2(q) = GroupMeasures(AwaySet+1,j,2);
-                        q=q+1;
-                    else
-                        TheseMeasure2(q) = NaN;
-                        q=q+1;
+                clear j
+                %Construct Second set of measurements
+                j = 1;
+                if GroupMeasures(AwaySet+1,j,2) == -1
+                    TheseMeasures2 = NaN;
+                else
+                    q=1;
+                    while (j<=DataLength)    %While measure is within the range
+                        %Record non-null measurements into TheseMeasures
+                        if (GroupMeasures(AwaySet+1,j,2) ~= -1)
+                            TheseMeasures2(q) = GroupMeasures(AwaySet+1,j,2);
+                            q=q+1;
+                        else
+                            TheseMeasure2(q) = NaN;
+                            q=q+1;
+                        end
+                        j = j+1;
                     end
-                    j = j+1;
                 end
+                clear j
+                if TheseMeasures1(1) == -1 || TheseMeasures2(1) == -1
+                    %Empty group
+                else
+                    %Run test and record results
+                    [h,p] = ttest(TheseMeasures1,TheseMeasures2);
+                    GroupResults(i,4) = h;
+                    GroupResults(i,5) = p;
+                    GroupResults(i,3) = 1; %record which test (paired-t = 1)
+                    %was performed
+                    PtTest = 1;
+                end
+                if h == 1
+                    fprintf(fileID, 'Group Comparison %2.0f Failed paired t-test (p=%5.4f).\r\n', i,p);
+                else
+                    fprintf(fileID, 'Group Comparison %2.0f Passed paired t-test (p=%5.4f).\r\n', i,p);
+                end
+                clear TheseMeasures1 TheseMeasures2
             end
-            clear j
-            if TheseMeasures1(1) == -1 || TheseMeasures2(1) == -1
-                %Empty group
-            else
-                %Run test and record results
-                [h,p] = ttest(TheseMeasures1,TheseMeasures2);
-                GroupResults(i,4) = h;
-                GroupResults(i,5) = p;
-                GroupResults(i,3) = 1; %record which test (paired-t = 1)
-                %was performed
-                PtTest = 1;
-            end
-            if h == 1
-                fprintf(fileID, 'Group Comparison %2.0f Failed paired t-test (p=%5.4f).\r\n', i,p);
-            else
-                fprintf(fileID, 'Group Comparison %2.0f Passed paired t-test (p=%5.4f).\r\n', i,p);
-            end
-            clear TheseMeasures1 TheseMeasures2
         end
+        
     end
 end
 if PtTest == 0
@@ -540,9 +543,9 @@ for i=1:TotalComp
             MannWhitStat = 1;
         end
         if h == 1
-            fprintf(fileID, 'Group Comparison %2.0f Failed Wilcoxon Signed Rank Test (p=%5.4f).\r\n', i,p);
+            fprintf(fileID, 'Group Comparison %2.0f Failed Mann Whitney U-Test (p=%5.4f).\r\n', i,p);
         else
-            fprintf(fileID, 'Group Comparison %2.0f Passed Wilcoxon Signed Rank Test (p=%5.4f).\r\n', i,p);
+            fprintf(fileID, 'Group Comparison %2.0f Passed Mann Whitney U-Test (p=%5.4f).\r\n', i,p);
         end
         clear TheseMeasures1 TheseMeasures2
     end
@@ -553,8 +556,9 @@ if MannWhitStat == 0;
     fprintf(fileID, 'No Mann Whitney U-Tests Performed.\r\n');
 end
 
-%% All Testing Complete. Close open app.s
+%% All Testing Complete. Summarize & Close open app.s
 
+fprintf(fileID,'
 
 fclose(fileID);
 open Statisticals_Results.txt
