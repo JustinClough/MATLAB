@@ -1,0 +1,58 @@
+Message to User: 
+The data must contain information organized against the following headers:
+Member ID, Group Type 1, Group Type 2... Group Type N, Measure 1, Measure 2.
+(Measure 2 is an optional column and tiggers pair-wise comparison)
+(If not all group types are needed, insert zeros for that column)
+File must not include anything but values (no letters or special characters).
+File name must end in .csv (<example>.csv).
+
+User Reported File Name: Testing.csv 
+User Reported Number of Groups:  1 
+
+Results from Goodness-of-Fit (GoF) Test. 
+Test Parameters: 
+Level of Significance at 5% 
+Null Hyp(0): Normal Distributions.
+Alt Hyp(1): Not Normal.
+
+Groupset  1 Failed GoF for Measurement number  1 (p=0.0037).
+Groupset  2 Failed GoF for Measurement number  1 (p=0.0003).
+Groupset  3 has insufficient members for Measurement number  1: Assume Non-Normal.
+Groupset  4 has insufficient members for Measurement number  1: Assume Non-Normal.
+
+Results from Paired t-test Test. 
+Test Parameters: 
+Level of Significance at 5% 
+Null Hyp(0): Groups means are equal.
+Alt Hyp(1): Groups not equal.
+
+No paired t-test Performed.
+
+Results from Non-Paired t-test Test. 
+Test Parameters: 
+Level of Significance at 5% 
+Null Hyp(0): Groups means are equal.
+Alt Hyp(1): Groups not equal.
+
+No non-paired t-test Performed.
+
+Results from Wilcoxon Signed Rank Test. 
+Test Parameters: 
+Level of Significance at 5% 
+Null Hyp(0): Groups means are equal.
+Alt Hyp(1): Groups not equal.
+
+No Wilcoxon Signed Rank Tests Performed.
+
+Results from Mann Whitney U-Test. 
+Test Parameters: 
+Level of Significance at 5% 
+Null Hyp(0): Groups means are equal.
+Alt Hyp(1): Groups not equal.
+
+Group Comparison  2 Passed Wilcoxon Signed Rank Test (p=0.5785).
+Group Comparison  3 Passed Wilcoxon Signed Rank Test (p=0.2955).
+Group Comparison  4 Failed Wilcoxon Signed Rank Test (p=0.0024).
+Group Comparison  6 Passed Wilcoxon Signed Rank Test (p=0.3908).
+Group Comparison  7 Failed Wilcoxon Signed Rank Test (p=0.0006).
+Group Comparison  9 Failed Wilcoxon Signed Rank Test (p=0.0131).
