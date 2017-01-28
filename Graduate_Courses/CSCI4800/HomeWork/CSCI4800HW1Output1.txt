@@ -1,0 +1,6 @@
+Results for Problem 2 (not including plot):
+The polynomial evaluated using nest: p(1) = 0.5403.
+The polynomial evaluated directly: p(1) = 0.5403.
+The difference is: Difference = 0.0000.
+The value of cosine is: cos(1) 0.5403.
+Plot of p(x) and cos(x) on following page.

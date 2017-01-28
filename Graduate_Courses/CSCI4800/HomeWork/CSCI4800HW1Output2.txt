@@ -1,0 +1,12 @@
+Results for Problem 3:
+Results for Part A): 
+Polynomial Value: 1.2213.
+Value directly evaluated: 1.2214.
+Maximum predicted value of Remainder: 0.0002.
+Difference from Polynomial WRT direct evaluation: 0.0001.
+
+Results for Part B): 
+Polynomial Value: 0.9534.
+Value directly evaluated: 0.9535.
+Maximum predicted value of Remainder: 4.1988e-05.
+Difference from Polynomial WRT direct evaluation: 2.5089e-05.
