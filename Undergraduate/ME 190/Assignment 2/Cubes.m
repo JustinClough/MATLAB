@@ -1,0 +1,11 @@
+function SAandV=Cubes(X);
+SAandV(1,1)=6*(X(1)^2);
+SAandV(2,1)=6*(X(2)^2);
+SAandV(3,1)=6*(X(3)^2);
+SAandV(4,1)=6*(X(4)^2);
+SAandV(5,1)=6*(X(5)^2);
+SAandV(1,2)=(X(1)^3);
+SAandV(2,2)=(X(2)^3);
+SAandV(3,2)=(X(3)^3);
+SAandV(4,2)=(X(4)^3);
+SAandV(5,2)=(X(5)^3);

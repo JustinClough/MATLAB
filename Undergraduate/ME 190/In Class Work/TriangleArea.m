@@ -1,0 +1,10 @@
+clear;
+base1=5.2;
+height1=5.2;
+base2=5.2;
+height2=6.3;
+base3=6.4;
+height3=7.7;
+A1=.5*base1*height1
+A2=.5*base2*height2
+A3=.5*base3*height3

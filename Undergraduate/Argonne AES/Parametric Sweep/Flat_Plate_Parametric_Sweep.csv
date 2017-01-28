@@ -1,0 +1,11 @@
+% Model,Flat Reflector-Parametric Sweep.mph
+% Version,COMSOL 5.1.0.145
+% Date,"Jun 30 2015, 08:17"
+% Table,Table 1 - Surface Maximum 1 (actd.p_t)
+% Dbar,Maximum: Total acoustic pressure field (Pa)
+0.5,32440.557509964405
+0.7,35718.741881341964
+0.9,91057.85250944903
+1.1,86010.10713191831
+1.3,87853.71176449629
+1.5,85172.06153494009
