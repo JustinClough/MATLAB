@@ -8,7 +8,7 @@
 clear
 home
 close all
-DIR = 'Graduate_Courses/CSCI4800/HomeWork/';
+DIR = 'Graduate_Courses/CSCI4800/HomeWork/Set2';
 fileID = fopen( [DIR 'CSCI4800HW2Output1.txt'], 'w');
 
 %% Problem 1
