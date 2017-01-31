@@ -1,0 +1,2 @@
+Results for Problem 2 (not including plot):
+Below is a copy-and-paste of the command window output: 
