@@ -1,2 +1,0 @@
-Solutions to Problem 1: 
-Minimum number of iterations for  10 digits of accuracy:  33

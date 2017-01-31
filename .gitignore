@@ -15,5 +15,5 @@ XPS-Q_Matlab_Drivers/
 Statisticals_Results.txt
 
 #Ignore CSCI 4800 results
-CSCI4800/*.txt
-CSCI4800/*.jpg
+CSCI4800/HomeWork/*/*.txt
+CSCI4800/HomeWork/*/*.jpg
