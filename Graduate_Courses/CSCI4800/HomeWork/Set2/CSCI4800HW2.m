@@ -51,15 +51,15 @@ n = n1; %same accuracy over same bounds means same number of iterations
 
 fprintf(fileID,...
     'Minimum number of iterations for %3.0f digits of accuracy: %3.0f\r\n' ...
-    ,P, n);
+    ,P                       ,n);
 
 
 %close results file
 fclose(fileID);
 
 
-
 %% Problem 2
+fileID = fopen( [DIR 'CSCI4800HW2Output2.txt'], 'w');
 fprintf(fileID, 'Results for Problem 2 (not including plot):\r\n');
 
 %declare function
@@ -69,9 +69,9 @@ xmin2 = -2;
 xmax2 = 2;
 dx2 = 0.1;
 
-for i = 1:(xmax2-xmax2)/dx+1;
-    x2(i) = xmin2 + (i-1)*dx;
-    func2(i) = f(x(i));
+for i = 1:(xmax2-xmin2)/dx2+1;
+    x2(i) = xmin2 + (i-1)*dx2;
+    func2(i) = f2(x2(i));
 end
 clear i
 
@@ -87,21 +87,57 @@ ylabel('Function values');
 %save image as .jpg file
 print( [DIR 'CSCI4800HW2plot2'], '-djpeg');
 
+%Solve for three roots
+Bounds1 = [-1.5 -0.5];
+Bounds2 = [-0.5 0.5];
+Bounds3 = [0.5 1.5];
+root2a= bisect(f2, Bounds1(1), Bounds1(2), 10^-4, 100)
+root2b= bisect(f2, Bounds2(1), Bounds2(2), 10^-4, 100)
+root2c= bisect(f2, Bounds3(1), Bounds3(2), 10^-4, 100)
+
+fprintf(fileID, 'Below is a copy-and-paste of the command window output: \r\n')
 
 
+%close results file
+fclose(fileID);
+
+%% Problem 3
+
+%No code needed for problem 3
+
+%% Problem 4
+fileID = fopen( [DIR 'CSCI4800HW2Output4.txt'], 'w');
+fprintf(fileID, 'Results for Problem 4:\r\n');
+
+%Assign constants
+x04 = 0.5;
+tol4 = 10^-5;
+maxIter4 = 20;
+
+%construct functions
+ga=@(x) ((1-x)/3)^(1/3);
+gb=@(x) (1-3*x^3);
+gc=@(x) (1+6*x^3)/(1+9*x^2);
+
+try
+    root4a = fixedPoint(ga, x04, tol4, maxIter4)
+catch ME
+    rethrow(ME)
+end
+try
+    root4b = fixedPoint(gb, x04, tol4, maxIter4)
+catch ME
+    rethrow(ME)
+end
+try
+    root4c = fixedPoint(gc, x04, tol4, maxIter4)
+catch ME
+    rethrow(ME)
+end
+
+fprintf(fileID, 'Below is a copy-and-paste of the command window output: \r\n')
 
 
-
-% %% Problem 3
-%
-% %Open new text file to write to
-% fileID = fopen( [DIR 'CSCI4800HW1Output2.txt'], 'w');
-% fprintf(fileID, 'Results for Problem 3:\r\n');
-%
-%
-%
-%
-%
-% %Close file:
-% fclose(fileID);
+%Close file:
+fclose(fileID);
 
