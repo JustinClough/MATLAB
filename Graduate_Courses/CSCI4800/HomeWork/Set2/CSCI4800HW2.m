@@ -119,21 +119,10 @@ ga=@(x) ((1-x)/3)^(1/3);
 gb=@(x) (1-3*x^3);
 gc=@(x) (1+6*x^3)/(1+9*x^2);
 
-try
-    root4a = fixedPoint(ga, x04, tol4, maxIter4)
-catch ME
-    rethrow(ME)
-end
-try
-    root4b = fixedPoint(gb, x04, tol4, maxIter4)
-catch ME
-    rethrow(ME)
-end
-try
-    root4c = fixedPoint(gc, x04, tol4, maxIter4)
-catch ME
-    rethrow(ME)
-end
+%Evaluate roots
+root4a = fixedPoint(ga, x04, tol4, maxIter4)
+root4c = fixedPoint(gc, x04, tol4, maxIter4)
+%NOTE: find root for part b using command line; method throws error
 
 fprintf(fileID, 'Below is a copy-and-paste of the command window output: \r\n')
 

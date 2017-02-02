@@ -557,8 +557,15 @@ if MannWhitStat == 0;
 end
 
 %% All Testing Complete. Summarize & Close open app.s
+fprintf(fileID, '\r\n,');
+for i=1:TotalComp
+    CompNum = i;
+    FirstG = GroupResults(i,1);
+    SecondG = GroupResults(i,2);
+    fprintf(fileID,'Comparison Number: %3.0f, First Group: %3.0f, Second Group: %3.0f\r\n', ...
+                                       CompNum,            FirstG,              SecondG);
+end
 
-fprintf(fileID,'
 
 fclose(fileID);
 open Statisticals_Results.txt
