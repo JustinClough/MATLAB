@@ -469,7 +469,7 @@ if PairwiseSwitch == 0
             if h == 1
                 fprintf(fileID, 'Group Comparison %2.0f Failed Wilcoxon Signed Rank Test (p=%5.4f).\r\n', i,p);
             else
-                fprintf(fileID, 'Group Comparison %2.0f Wilcoxon Signed Rank Test (p=%5.4f).\r\n', i,p);
+                fprintf(fileID, 'Group Comparison %2.0f Passed Wilcoxon Signed Rank Test (p=%5.4f).\r\n', i,p);
             end
             clear TheseMeasures1 TheseMeasures2
         end
@@ -557,7 +557,7 @@ if MannWhitStat == 0;
 end
 
 %% All Testing Complete. Summarize & Close open app.s
-fprintf(fileID, '\r\n,');
+fprintf(fileID, '\r\n');
 for i=1:TotalComp
     CompNum = i;
     FirstG = GroupResults(i,1);
