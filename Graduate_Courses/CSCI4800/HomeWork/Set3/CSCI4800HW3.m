@@ -52,24 +52,51 @@ fprintf(fileID, '\r\nThis problem is ill-conditioned.\r\n');
 %close results file
 fclose(fileID);
 
-
 %% Problem 2
-fileID = fopen( [DIR 'CSCI4800HW3Output2.txt'], 'w');
-fprintf(fileID, 'Results for Problem 2 (not including plot):\r\n');
 
-%close results file
-fclose(fileID);
+%No code needed for Problem 2
 
 %% Problem 3
-fileID = fopen( [DIR 'CSCI4800HW3Output3.txt'], 'w');
-fprintf(fileID, 'Results for Problem 2 (not including plot):\r\n');
 
-%close results file
-fclose(fileID);
+%No code needed for Problem 3
+
 %% Problem 4
 fileID = fopen( [DIR 'CSCI4800HW3Output4.txt'], 'w');
 fprintf(fileID, 'Results for Problem 4:\r\n');
 
+f4a=@(x) x^2-7;
+div4a=@(x) 2*x;
+x04a = 1;
+tol = 10^-12;
+maxIterations = 20;
+Sol4a = solveEquationByNewton(f4a, div4a, x04a, tol, maxIterations);
+fprintf(fileID,'\r\nResults for Part b (copy-pasted from command window: \r\n');
+
+f4b=@(x) exp(sin(x)^3)+x^6-2*x^4-x^3-1;
+div4b=@(x) -3*x^2-8*x^3+6*x^5+3*exp(sin(x)^3)*cos(x)*sin(x)^2;
+xmin = -2;
+xmax = 2;
+dx =0.01;
+for i=1: (xmax-xmin)/dx+1
+    X4(i) = xmin+(i-1)*dx;
+    Func(i) = f4b(X4(i));
+end
+plot(X4, Func)
+grid on
+xlabel('X Values');
+ylabel('Function Values');
+title('Plot for Problem 4, Part C');
+print( [DIR 'CSCI4800HW3plot1'], '-djpeg');
+
+tol = 10^-12;
+maxIterations = 20;
+for j=1:3
+    guess = input('Enter Guess Value: ');
+    fprintf('\nResults for Initial Guess of: %3.2d\n',guess)
+    Sol4b = solveEquationByNewton(f4b, div4b, guess, tol, maxIterations);
+end
+
+fprintf(fileID,'\r\nResults for Part b (copy-pasted from command window): \r\n');
 
 %Close file:
 fclose(fileID);

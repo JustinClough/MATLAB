@@ -29,7 +29,7 @@ while abs((b-a)/2)>tol
     %Report satus to user
     fprintf(...
         'bisect: k=%2.0d, a=%11.4e f(a)=%8.2e b=%11.4e f(b)=%8.2e c=%14.7e\n'...
-        ,        k,       a,       fa,        b,       fb,        c)
+        ,        k,       a,       fa,        b,       fb,        c);
     %compare midpoint to solution and edges
     if fc ==0
         %Solution found. 
@@ -48,7 +48,7 @@ while abs((b-a)/2)>tol
     if k >= maxIterations
         error( ...
             'Maximum number of iterations (%11.4f) reached.\n'...
-            , maxIterations)
+            , maxIterations);
     end
         
 end
