@@ -15,6 +15,6 @@ XPS-Q_Matlab_Drivers/
 Statisticals_Results.txt
 
 #Ignore CSCI 4800 results
-/Graduate_Courses/CSCI4800/HomeWork/**.txt
+Graduate_Courses/CSCI4800/HomeWork/**/.txt
 
-/Graduate_Courses/CSCI4800/HomeWork/**.jpg
+Graduate_Courses/CSCI4800/HomeWork/**/.jpg
