@@ -70,7 +70,7 @@ x04a = 1;
 tol = 10^-12;
 maxIterations = 20;
 Sol4a = solveEquationByNewton(f4a, div4a, x04a, tol, maxIterations);
-fprintf(fileID,'\r\nResults for Part b (copy-pasted from command window: \r\n');
+fprintf(fileID,'\r\nResults for Part b (copy-pasted from command window): \r\n');
 
 f4b=@(x) exp(sin(x)^3)+x^6-2*x^4-x^3-1;
 div4b=@(x) -3*x^2-8*x^3+6*x^5+3*exp(sin(x)^3)*cos(x)*sin(x)^2;
@@ -91,12 +91,12 @@ print( [DIR 'CSCI4800HW3plot1'], '-djpeg');
 tol = 10^-12;
 maxIterations = 20;
 for j=1:3
-    guess = input('Enter Guess Value: ');
-    fprintf('\nResults for Initial Guess of: %3.2d\n',guess)
-    Sol4b = solveEquationByNewton(f4b, div4b, guess, tol, maxIterations);
+    guess(j) = input('Enter Guess Value: ');
+    fprintf('\nResults for Initial Guess of: %3.2d\n',guess(j))
+    Sol4b(j) = solveEquationByNewton(f4b, div4b, guess(j), tol, maxIterations);
 end
 
-fprintf(fileID,'\r\nResults for Part b (copy-pasted from command window): \r\n');
+fprintf(fileID,'\r\nResults for Part c (copy-pasted from command window): \r\n');
 
 %Close file:
 fclose(fileID);
@@ -105,6 +105,39 @@ fclose(fileID);
 fileID = fopen( [DIR 'CSCI4800HW3Output5.txt'], 'w');
 fprintf(fileID, 'Results for Problem 5:\r\n');
 
+
+f5a=@(x) x^2-3;
+x05a = 1;
+x15a = 2.0;
+tol = 10^-12;
+maxIterations = 20;
+Sol5a = solveEquationBySecantMethod(f5a, x05a, x15a, tol, maxIterations);
+fprintf(fileID,'\r\nResults for Part b (copy-pasted from command window): \r\n');
+
+f5b=@(x) exp(sin(x)^3)+x^6-2*x^4-x^3-1;
+xmin = -2;
+xmax = 2;
+dx =0.01;
+for i=1: (xmax-xmin)/dx+1
+    X5(i) = xmin+(i-1)*dx;
+    Func(i) = f5b(X5(i));
+end
+plot(X5, Func)
+grid on
+xlabel('X Values');
+ylabel('Function Values');
+title('Plot for Problem 5, Part C');
+print( [DIR 'CSCI4800HW3plot2'], '-djpeg');
+
+tol = 10^-12;
+maxIterations = 20;
+for j=1:3
+    guess2(j) = input('Enter Guess 2 Value: ');
+    fprintf('\nResults for Initial Guess 2 of: %3.2d\n',guess2(j))
+    Sol5b = solveEquationBySecantMethod(f5b, guess(j), guess2(j), tol, maxIterations);
+end
+
+fprintf(fileID,'\r\nResults for Part c (copy-pasted from command window): \r\n');
 
 %Close file:
 fclose(fileID);

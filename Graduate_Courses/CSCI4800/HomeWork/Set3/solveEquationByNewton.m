@@ -26,8 +26,8 @@ while (k <= maxIterations) && ( abs(Func(k))>=tol )
     R(k+1) = abs(Func(k+1))/abs(Func(k));
     if( k == 1 ) % do not print p first time
         fprintf('Newton: it=%2d: x=%13.6e f(x)=%9.2e ratio=%9.2e\n',...
-                         k,      x(k),      Func(k),        ratio);
-    elseif (k == maxIterations)
+                         k,      x(k),    Func(k),   ratio);
+    elseif (k >= maxIterations)
         error('Maximum number of iterations exceeded');
     else
         p = log(R(k))/log(R(k-1));
