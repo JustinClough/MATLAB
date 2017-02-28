@@ -34,30 +34,51 @@ for j = 1:n
             A(i,j) = -1;
         end
     end
-    x(j,1) = n-j+1; 
+    x_e(j,1) = n-j+1;
 end
-b = A*x;
-
+b = A*x_e;
 tol = 10^-4;
 MaxIterations = 100;
-
-
+k=1;
+x(:,k) = zeros(1,n);
+delta(k) = norm( b-A*x(:,k),Inf)/norm(b,Inf);
 % Part a: Jacobi Method
+
+while (delta(k)>tol)&&(k <=MaxIterations)
+    for i = 1:n
+        Sumed_ax = zeros(1,n);
+        for j = 1:n
+            if j~=i
+                Sumed_ax(i) = A(i,j)*x(j,k);
+            end
+        end
+        x(i,k+1) = (1/A(i,i))*(-Sumed_ax(i) + b(i));
+    end
+    delta(k+1) = norm( b-A*x(:,k+1),Inf)/norm(b,Inf);
+    if (mod(k,10) == 1);
+        fprintf(fileID,...
+        'Jacobi: k=%5d, delta=%8.2e, CR=%8.2e\n', ...
+                 k,     delta(k),    delta(k+1)/delta(k));
+             %Modified CR so that it can be calculated on the first step
+    end
+    k=k+1;
+end
 
 % Part b: Gauss-Seidel Method
 
+
+
+
+
 % Part c: SOR; omega = 1.0 (0.1) 2.0
 omega_i = 1.0;
-omega_f = 2.0
+omega_f = 2.0;
 d_omega = 0.1;
 
-for i = 1:(omega_f-omega_i)/d_omega
+for i = 1:((omega_f-omega_i)/d_omega+1)
     
 end
 
-
-
-fprintf(fileID,'\r\nResults for Part a (copy-pasted from command window): \r\n');
 
 %Close file:
 fclose(fileID);
