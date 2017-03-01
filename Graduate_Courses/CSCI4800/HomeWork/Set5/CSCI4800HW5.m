@@ -41,32 +41,33 @@ tol = 10^-4;
 MaxIterations = 100;
 k=1;
 xJ(:,k) = zeros(1,n);
-delta(k) = norm( b-A*xJ(:,k),Inf)/norm(b,Inf);
+deltaJ(k) = norm( b-A*xJ(:,k),Inf)/norm(b,Inf);
 % Part a: Jacobi Method
 
-while (delta(k)>tol)&&(k <MaxIterations)
+while (deltaJ(k)>tol)&&(k <MaxIterations)
     for i = 1:n
         Sumed_ax = zeros(1,n);
         for j = 1:n
             if j~=i
-                Sumed_ax(i) = A(i,j)*xJ(j,k);
+                Sumed_ax(i) = Sumed_ax(i)+ A(i,j)*xJ(j,k);
             end
         end
         xJ(i,k+1) = (1/A(i,i))*(-Sumed_ax(i) + b(i));
     end
-    delta(k+1) = norm( b-A*xJ(:,k+1),Inf)/norm(b,Inf);
+    deltaJ(k+1) = norm( b-A*xJ(:,k+1),Inf)/norm(b,Inf);
     if (mod(k,10) == 1);
         fprintf(fileID,...
-        'Jacobi: k=%5d, delta=%8.2e, CR=%8.2e\n', ...
-                 k,     delta(k),    delta(k+1)/delta(k));
-             %Modified CR so that it can be calculated on the first step
+            'Jacobi: k=%5d, delta=%8.2e, CR=%8.2e\n', ...
+            k,     deltaJ(k),    deltaJ(k+1)/deltaJ(k));
+        %Modified CR so that it can be calculated on the first step
     end
     k=k+1;
 end
 rfe = norm((xJ(:,k)-x_e), Inf)/norm(x_e,Inf);
 fprintf(fileID, ...
     'Jacobi: RFE = %9.3e, numIterations=%d\n\n'...
-            ,rfe          ,k);
+    ,rfe          ,k);
+
 % Part b: Gauss-Seidel Method
 
 
