@@ -70,18 +70,100 @@ fprintf(fileID, ...
 
 % Part b: Gauss-Seidel Method
 
+k=1;
+xGS(:,k) = zeros(1,n);
+deltaGS(k) = norm( b-A*xGS(:,k),Inf)/norm(b,Inf);
+% Part b: Gauss-Seidel Method
 
-
-
+while (deltaGS(k)>tol)&&(k <MaxIterations)
+    for i = 1:n
+        Sumed_ax = zeros(1,n);
+        for j = 1:n
+            if j<=i-1
+                Sumed_ax(i) = Sumed_ax(i)+ A(i,j)*xGS(j,k+1);
+            elseif j>=i+1
+                Sumed_ax(i) = Sumed_ax(i)+ A(i,j)*xGS(j,k);
+            end
+        end
+        xGS(i,k+1) = (1/A(i,i))*(-Sumed_ax(i) + b(i));
+    end
+    deltaGS(k+1) = norm( b-A*xGS(:,k+1),Inf)/norm(b,Inf);
+    if (mod(k,10) == 1);
+        fprintf(fileID,...
+            'Gauss-Seidel: k=%5d, delta=%8.2e, CR=%8.2e\n', ...
+            k,     deltaGS(k),    deltaGS(k+1)/deltaGS(k));
+        %Modified CR so that it can be calculated on the first step
+    end
+    k=k+1;
+end
+rfe = norm((xGS(:,k)-x_e), Inf)/norm(x_e,Inf);
+fprintf(fileID, ...
+    'Gauss-Seidel: RFE = %9.3e, numIterations=%d\n\n'...
+    ,rfe          ,k);
 
 % Part c: SOR; omega = 1.0 (0.1) 2.0
 omega_i = 1.0;
 omega_f = 2.0;
 d_omega = 0.1;
 
-for i = 1:((omega_f-omega_i)/d_omega+1)
-    
+for m = 1:((omega_f-omega_i)/d_omega+1)
+    omega(m) = omega_i+(m-1)*d_omega;
+    k=1;
+    xSOR(:,k) = zeros(1,n);
+    deltaSOR(k) = norm( b-A*xSOR(:,k),Inf)/norm(b,Inf);
+    % Part b: Gauss-Seidel Method
+    while (deltaSOR(k)>tol)&&(k <MaxIterations)
+        for i = 1:n
+            Sumed_ax = zeros(1,n);
+            for j = 1:n
+                if j<=i-1
+                    Sumed_ax(i) = Sumed_ax(i)+ A(i,j)*xSOR(j,k+1);
+                elseif j>=i
+                    Sumed_ax(i) = Sumed_ax(i)+ A(i,j)*xSOR(j,k);
+                end
+            end
+            xSOR(i,k+1) = xSOR(i,k)+ omega(m)*(1/A(i,i))*(-Sumed_ax(i) + b(i));
+        end
+        deltaSOR(k+1) = norm( b-A*xSOR(:,k+1),Inf)/norm(b,Inf);
+        if (mod(k,10) == 1)&&(omega(m) == 1.5);
+            fprintf(fileID,...
+                'SOR (omega=1.5): k=%5d, delta=%8.2e, CR=%8.2e\n', ...
+                k,     deltaSOR(k),    deltaSOR(k+1)/deltaSOR(k));
+            %Modified CR so that it can be calculated on the first step
+        end
+        k=k+1;
+    end
+    if omega(m) == 1.5
+        rfe = norm((xSOR(:,k)-x_e), Inf)/norm(x_e,Inf);
+        fprintf(fileID, ...
+            'SOR (omega=1.5): RFE = %9.3e, numIterations=%d\n\n'...
+            ,rfe          ,k);
+    end
+    total_iters(m) = k;
 end
+
+
+for p = 1:length(omega)
+        fprintf(fileID, ...
+    'SOR: RFE = %9.3e, omega=%6.3f, numIterations=%3d\n' ...
+                ,rfe,omega(p),total_iters(p));
+    total_iters(m) = k;
+end
+
+figure
+plot(omega,total_iters, '-+');
+title('Total Iterations for Given Relaxation Parameter')
+ylabel('Iterations')
+xlabel('Relaxation Parameter')
+print( [DIR 'CSCI4800HW5plot1'], '-djpeg');
+
+[total_iters_min, I_min] = min(total_iters);
+Best_Omega = omega(I_min);
+
+fprintf(fileID, ...
+    ['\nBest Relaxation Parameter Evaluated: %2.1f. \n' ...
+    'Iterations at Relaxation Parameter: %3.0d. \n'] ...
+    , Best_Omega, total_iters_min);
 
 
 %Close file:
