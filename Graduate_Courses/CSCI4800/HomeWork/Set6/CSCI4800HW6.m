@@ -41,9 +41,12 @@ for i = 1:n;
 end
 b = A*x;
 
-[x,nit] = conjugateGradient( A, b, x0, maxIterations, rtol ); 
+[x_CG,nit] = conjugateGradient( A, b, x0, maxIterations, rtol ); 
 
+fprintf(fileID, 'Copy-pasted from Command Window: \n\n');
 
+maxErr = norm(x_CG-x, Inf)/norm(x,Inf);
+fprintf(fileID, '\nCG: n=%d, rtol=%8.2e, nit=%d max-RFE = %8.2e \n',n,rtol,nit,maxErr);
 
 %Close file:
 fclose(fileID);
@@ -53,13 +56,25 @@ fclose(fileID);
 
 % No code needed for Problem 3
 
-
 %% Problem 4
 
 fileID = fopen( [DIR 'CSCI4800HW6Output4.txt'], 'w');
 fprintf(fileID, 'Results for Problem 4:\r\n');
 
+tol = 10^-10; 
+x01 = [1;1];
+x02 = [-1;-1];
 
+func = @(x) [(x(1)^2+x(2)^2-1); ((x(1)-1)^2+x(2)^2-1)];
+dfunc = @(x) [(x(1)*2),(x(2)*2);((x(1)-1)*2),(2*x(2))];
+
+fprintf(fileID, 'Copy-pasted from Command Window: \n');
+
+xc1 = solveSystemByNewton( func,dfunc,x01,tol );
+xc2 = solveSystemByNewton( func,dfunc,x02,tol );
+
+fprintf(fileID, 'First guess results: \n\n');
+fprintf(fileID, 'Second guess results: \n\n');
 
 %Close file:
 fclose(fileID);
