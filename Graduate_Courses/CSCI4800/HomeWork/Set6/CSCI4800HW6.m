@@ -79,3 +79,63 @@ fprintf(fileID, 'Second guess results: \n\n');
 %Close file:
 fclose(fileID);
 
+%% Problem 5
+
+fileID = fopen( [DIR 'CSCI4800HW6Output5.txt'], 'w');
+fprintf(fileID, 'Results for Problem 5:\r\n');
+fprintf(fileID, 'Copy-Pasted from Command Window:\r\n');
+
+
+% Create constants
+n = 500;
+maxIterations = 40;
+rtol = 10^-15;
+A = diag(sqrt(1:n)) + diag(cos(1:(n-10)),10) + diag(cos(1:(n-10)),-10);
+x = ones(n,1);
+b = A*x;
+x0 = zeros(n,1);
+
+% case 1: M = I
+M = eye(n);
+[x,nit,rbe1] = preconditionedConjugateGradient( M, A,b, x0, maxIterations, rtol );
+
+% case 2: M = diagonal (jacobi)
+D = zeros(n,n);
+for i = 1:n
+    for j = 1:n
+        if i == j
+            D(i,j) = A(i,j);
+        end
+    end
+end
+
+M = D;
+[x,nit,rbe2] = preconditionedConjugateGradient( M, A,b, x0, maxIterations, rtol );
+
+% case 3: M = SOR-type (omega = 1)
+[L, U] = luFactorNoPivoting(A);
+M = (D+L)*D^-1*(D+U);
+[x,nit,rbe3] = preconditionedConjugateGradient( M, A,b, x0, maxIterations, rtol );
+
+hold off
+figure
+semilogy(rbe1, 'o-')
+hold on
+semilogy(rbe2, '^-.')
+semilogy(rbe3, 's:')
+title('Convergence for different Preconditioners')
+xlabel('Iteration')
+ylabel('Relative Backward Error')
+legend('Identity','Jacobian','SOR-type', 'Location','EastOutside')
+
+print( [DIR 'CSCI4800HW6plot1'], '-djpeg');
+
+
+
+
+
+
+%Close file:
+fclose(fileID);
+
+

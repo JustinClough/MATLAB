@@ -43,6 +43,7 @@ while (k < maxIterations) && (norm(r_now, 2) > rtol);
     r_prod_now = r_prod_new;
     d_now = r_new + beta_now*d_now;
     r_now = r_new;
+    x_now = x_new;
     k = k+1;
     
 end
