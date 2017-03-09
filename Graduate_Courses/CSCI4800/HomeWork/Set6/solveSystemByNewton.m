@@ -17,10 +17,10 @@ MNBE = norm(f(x_now),Inf);
 
 while MNBE > tol;
     % calculate new x guess
-    j_inv = (fx(x_now))^-1;
     fc = f(x_now);
-    delta = j_inv*fc;
-    x_new = x_now-delta;
+    [L, U] = luFactorNoPivoting(fx(x_now));
+    delta = luSolveNoPivoting(fc, L, U);
+    x_new = x_now-delta';
     % update information
     x_now = x_new;
     MNBE = norm(f(x_now),Inf);
