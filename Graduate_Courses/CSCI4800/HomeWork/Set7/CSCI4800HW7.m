@@ -19,6 +19,7 @@ DIR = 'Graduate_Courses/CSCI4800/HomeWork/Set7/';
 
 %% Problem 3
 
+% Part a
 % Set constants for problem
 a = -2;
 b = 2;
@@ -26,7 +27,6 @@ n = 15;
 m = 101;
 xd = zeros(1,n);
 
-% Part a
 for i = 1:n
     xd(i) = a+(i-1)*(b-a)/(n-1);
     yd(i) = 1/(1+2*xd(i)^2);
@@ -60,6 +60,60 @@ title('Problem 3a: Error of Interpolation')
 xlabel('X Value')
 ylabel('Error Value')
 print( [DIR 'CSCI4800HW7plot3a_error'], '-djpeg');
+
+% Part b
+% Set constants for problem
+a = -2;
+b = 2;
+n = 15;
+m = 101;
+xd = zeros(1,n);
+
+for i = 1:n
+    xd(i) = (b-a)/2*cos((2*i-1)*pi/2/n)+(b+a)/2;
+    yd(i) = 1/(1+2*xd(i)^2);
+end
+clear i
+
+for i = 1:m
+    x(i) = a + (i-1)*(b-a)/(m-1);
+    Func(i) = 1/(1+2*x(i)^2);
+    Poly_b(i) = polyInterp(xd,yd,x(i));
+    Error_b(i) = Func(i)-Poly_b(i);
+end
+
+% Plot functions and evaluations points
+figure
+hold on
+plot(x, Poly_b, '--');
+plot(x,Func, '-');
+plot(xd,yd, 'p');
+legend('Interpolation', 'Function','Evaluation Points','Location','NorthEast');
+title('Problem 3b: Chebyshev Interpolation Points');
+xlabel('X Value')
+ylabel('Function Value')
+print( [DIR 'CSCI4800HW7plot3b'], '-djpeg');
+
+%Plot Error
+figure
+plot(x, Error_b)
+hold on 
+title('Problem 3b: Error of Interpolation')
+xlabel('X Value')
+ylabel('Error Value')
+print( [DIR 'CSCI4800HW7plot3b_error'], '-djpeg');
+
+% Comparison of Methods
+figure
+hold on 
+plot(x,Error_a, ':');
+plot(x, Error_b, '-');
+title('Error from Different Evaluations points')
+xlabel('X Value')
+ylabel('Error Value')
+legend('Equally Spaced','Chevyshev', 'Location', 'South')
+print( [DIR 'CSCI4800HW7plotCompare'], '-djpeg');
+
 
 
 %% Problem 4
