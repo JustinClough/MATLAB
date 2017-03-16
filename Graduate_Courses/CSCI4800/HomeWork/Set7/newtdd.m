@@ -17,7 +17,7 @@ else
     error('Sample Arrays are different Lengths')
 end
 
-% Create table to find coefficients
+% Create table of all coefficients
 V = zeros(n,n);
 for i =1:n
     V(i,1) = y(i);
@@ -28,7 +28,7 @@ for i = 2:n
     end
 end
 
-% Return coefficients to user
+% Return needed coefficients to user
 for i = 1:n
     c(i) = V(1,i);
 end
