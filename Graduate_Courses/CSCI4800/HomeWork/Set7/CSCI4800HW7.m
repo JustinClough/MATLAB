@@ -114,16 +114,10 @@ ylabel('Error Value')
 legend('Equally Spaced','Chevyshev', 'Location', 'South')
 print( [DIR 'CSCI4800HW7plotCompare'], '-djpeg');
 
-
-
 %% Problem 4
 
 % No code needed for problem 4
 
 %% Problem 5
 
-fileID = fopen( [DIR 'CSCI4800HW6Output5.txt'], 'w');
-fprintf(fileID, 'Results for Problem 5:\r\n');
-
-%Close file:
-fclose(fileID);
+% Not attempted.
