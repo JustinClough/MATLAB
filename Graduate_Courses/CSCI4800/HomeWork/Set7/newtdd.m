@@ -20,11 +20,11 @@ end
 % Create table of all coefficients
 V = zeros(n,n);
 for i =1:n
-    V(i,1) = y(i);
+    V(i,1) = yd(i);
 end
 for i = 2:n
-    for j = n+1-i
-        V(j,i) = (V(j+1,i)-V(j,i))/(x(j+i-1)-x(j));
+    for j = 1:n+1-i
+        V(j,i) = (V(j+1,i-1)-V(j,i-1))/(xd(j+i-1)-xd(j));
     end
 end
 
