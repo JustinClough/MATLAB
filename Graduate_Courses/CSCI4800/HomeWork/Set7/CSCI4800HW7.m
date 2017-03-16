@@ -37,11 +37,31 @@ for i = 1:m
     x(i) = a + (i-1)*(b-a)/(m-1);
     Func(i) = 1/(1+2*x(i)^2;
     Poly_a(i) = polyInterp(xd,yd,x(i));
+    Error_a(i) = Func(i)-Poly_a(i);
 end
 
-
-
+% Plot functions and evaluations points
+hold off
+figure
+plot(x, Poly_a, '--');
+hold on
+plot(x,Func, '-');
+plot(xd,yd, 'p');
+legend('Interpolation', 'Function','Evaluation Points','Location','BestInside');
+title('Problem 3a: Equally Spaced Interpolation Points');
+xlabel('X Value')
+ylabel('Function Value')
 print( [DIR 'CSCI4800HW7plot3a'], '-djpeg');
+
+%Plot Error
+hold off
+figure
+plot(x, Error_a)
+hold on 
+title('Problem 3a: Error of Interpolation')
+xlabel('X Value')
+ylabel('Function Value')
+print( [DIR 'CSCI4800HW7plot3a_error'], '-djpeg');
 
 
 %% Problem 4
