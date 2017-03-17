@@ -55,7 +55,7 @@ print( [DIR 'CSCI4800HW7plot3a'], '-djpeg');
 %Plot Error
 figure
 plot(x, Error_a)
-hold on 
+hold on
 title('Problem 3a: Error of Interpolation')
 xlabel('X Value')
 ylabel('Error Value')
@@ -97,7 +97,7 @@ print( [DIR 'CSCI4800HW7plot3b'], '-djpeg');
 %Plot Error
 figure
 plot(x, Error_b)
-hold on 
+hold on
 title('Problem 3b: Error of Interpolation')
 xlabel('X Value')
 ylabel('Error Value')
@@ -105,7 +105,7 @@ print( [DIR 'CSCI4800HW7plot3b_error'], '-djpeg');
 
 % Comparison of Methods
 figure
-hold on 
+hold on
 plot(x,Error_a, ':');
 plot(x, Error_b, '-');
 title('Error from Different Evaluations points')
@@ -113,10 +113,110 @@ xlabel('X Value')
 ylabel('Error Value')
 legend('Equally Spaced','Chevyshev', 'Location', 'South')
 print( [DIR 'CSCI4800HW7plotCompare'], '-djpeg');
+close all
 
 %% Problem 4
 
-% No code needed for problem 4
+% Part b
+A = [1 0 0 0 0 0 0 0 ;
+    0 0 0 0 1 0 0 0 ;
+    0 0 -2 -6 0 0 2 0;
+    1 1 1 1 0 0 0 0 ;
+    0 0 0 0 0 0 2 6 ;
+    0 0 0 0 1 1 1 1 ;
+    0 1 2 3 0 -1 0 0 ;
+    0 0 2 0 0 0 0 0 ];
+b = [0 1 0 1 0 3 0 0 ]';
+x_4a = A^-1*b
+
+% Part c for n = 5
+clear x
+n = 5;
+m = 101;
+Theta_min = 0;
+Theta_max = 2*pi;
+a = 2;
+b = 1;
+dTheta = (Theta_max-Theta_min)/n;
+for i = 1: n+1
+    Theta(i) = Theta_min+(i-1)*dTheta;
+    x(i) = a*cos(Theta(i));
+    y(i) = b*sin(Theta(i));
+end
+clear i
+
+pp_x = spline(Theta,x);
+pp_y = spline(Theta,y);
+
+dTheta = (Theta_max-Theta_min)/m;
+for i = 1:m
+    Theta_fine(i) = Theta_min+(i-1)*dTheta;
+    xd(i) = a*cos(Theta_fine(i));
+    yd(i) = b*sin(Theta_fine(i));
+end
+
+Val_x = ppval(pp_x, Theta_fine);
+Val_y = ppval(pp_y, Theta_fine);
+
+figure
+plot(xd,yd, '-');
+hold on
+plot(x,y, 'o');
+plot(Val_x, Val_y, 'b:');
+axis square
+axis equal
+axis([-2.5 2.5 -2.5 2.5])
+title('Problem 4c: Ellipse Interpolation')
+xlabel('X Value')
+ylabel('Y Value')
+legend('True Solution','Interpolation Points','Interpolation', ...
+            'Location','SouthEast')
+print( [DIR 'CSCI4800HW7plot4c'], '-djpeg');
+
+% Part c for n = 9
+clear x
+n = 9;
+m = 101;
+Theta_min = 0;
+Theta_max = 2*pi;
+a = 2;
+b = 1;
+dTheta = (Theta_max-Theta_min)/n;
+for i = 1: n+1
+    Theta(i) = Theta_min+(i-1)*dTheta;
+    x(i) = a*cos(Theta(i));
+    y(i) = b*sin(Theta(i));
+end
+clear i
+
+pp_x = spline(Theta,x);
+pp_y = spline(Theta,y);
+
+dTheta = (Theta_max-Theta_min)/m;
+for i = 1:m
+    Theta_fine(i) = Theta_min+(i-1)*dTheta;
+    xd(i) = a*cos(Theta_fine(i));
+    yd(i) = b*sin(Theta_fine(i));
+end
+
+Val_x = ppval(pp_x, Theta_fine);
+Val_y = ppval(pp_y, Theta_fine);
+
+figure
+plot(xd,yd, '-');
+hold on
+plot(x,y, 'o');
+plot(Val_x, Val_y, 'b:');
+axis square
+axis equal
+axis([-2.5 2.5 -2.5 2.5])
+title('Problem 4c: Ellipse Interpolation')
+xlabel('X Value')
+ylabel('Y Value')
+legend('True Solution','Interpolation Points','Interpolation', ...
+            'Location','SouthEast')
+print( [DIR 'CSCI4800HW7plot4c'], '-djpeg');
+
 
 %% Problem 5
 
