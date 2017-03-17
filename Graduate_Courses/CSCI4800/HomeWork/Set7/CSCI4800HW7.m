@@ -166,12 +166,12 @@ plot(Val_x, Val_y, 'b:');
 axis square
 axis equal
 axis([-2.5 2.5 -2.5 2.5])
-title('Problem 4c: Ellipse Interpolation')
+title('Problem 4c: Ellipse Interpolation (n=5)')
 xlabel('X Value')
 ylabel('Y Value')
 legend('True Solution','Interpolation Points','Interpolation', ...
             'Location','SouthEast')
-print( [DIR 'CSCI4800HW7plot4c'], '-djpeg');
+print( [DIR 'CSCI4800HW7plot4c_n=5'], '-djpeg');
 
 % Part c for n = 9
 clear x
@@ -210,12 +210,12 @@ plot(Val_x, Val_y, 'b:');
 axis square
 axis equal
 axis([-2.5 2.5 -2.5 2.5])
-title('Problem 4c: Ellipse Interpolation')
+title('Problem 4c: Ellipse Interpolation (n=9)')
 xlabel('X Value')
 ylabel('Y Value')
 legend('True Solution','Interpolation Points','Interpolation', ...
             'Location','SouthEast')
-print( [DIR 'CSCI4800HW7plot4c'], '-djpeg');
+print( [DIR 'CSCI4800HW7plot4c_n=9'], '-djpeg');
 
 
 %% Problem 5
