@@ -41,7 +41,8 @@ hold on ;
 xlabel('Price [$]');
 ylabel('Sales per Week');
 plot([min(Price),max(Price)], LS, ':');
-legend('Data', 'Least Squares Fit');
+legend('Data', 'Demand (Least Squares Fit)');
+title('Soft Drink Sales')
 print( [DIR 'CSCI4800HW8plot1c1'], '-djpeg');
 
 % Print Requested information
