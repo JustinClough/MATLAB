@@ -47,7 +47,7 @@ print( [DIR 'CSCI4800HW8plot1c1'], '-djpeg');
 
 % Print Requested information
 fileID = fopen( [DIR 'CSCI4800HW8Output1c1.txt'], 'w');
-fprintf(fileID, 'Results for Problem 1, Part C:\r\n');
+fprintf(fileID, 'Results for Problem 1, Part C:\r\n\r\n');
 fprintf(fileID, 'Coefficients from Least Squares: \r\n');
 fprintf(fileID, 'Intercept: C_1 = %6.1f Sales per Week \r\n', C_1(1));
 fprintf(fileID, 'Slope: C_2 = %6.1f Sales per Week per Dollar \r\n', C_1(2));
@@ -99,8 +99,115 @@ fclose(fileID);
 
 %% Problem 2
 
+% Part a
+% Create Matrices from Given Values
+for i=1:6
+    t(i) = 0 + (i-1)*1/6;
+end
+y = [4 2 0 -5 -1 3];
+
+% Create A3 & b3
+for j = 1:3;
+    for i = 1:6;
+        if j == 1;
+            A3(i,j) = 1;
+        elseif j==2;
+            A3(i,j) = cos(2*pi*t(i));
+        elseif j==3;
+            A3(i,j) = sin(2*pi*t(i));
+        end
+    end
+end
+b3 = y';
+
+% Form normal equations & Solve
+AA3 = A3'*A3;
+Ab3 = A3'*b3;
+C3 = AA3\Ab3;
+
+% Calculate Residual
+r3 = b3 - A3*C3;
+
+% Create A4 & b4
+for j = 1:4;
+    for i = 1:6;
+        if j == 1;
+            A4(i,j) = 1;
+        elseif j==2;
+            A4(i,j) = cos(2*pi*t(i));
+        elseif j==3;
+            A4(i,j) = sin(2*pi*t(i));
+        elseif j==4;
+            A4(i,j) = cos(4*pi*t(i));
+        end
+    end
+end
+b4 = y';
+
+% Form normal equations & Solve
+AA4 = A4'*A4;
+Ab4 = A4'*b4;
+C4 = AA4\Ab4;
+
+% Calculate Residual
+r4 = b4 - A4*C4;
+RMSE = norm(r4,2)/sqrt(6);
+
+% Part b
+A5 = [1 1 1 1;
+      -2 0 1 2]';
+b5 = [log(1) log(2) log(2) log(5)]';
+
+AA5 = A5'*A5;
+Ab5 = A5'*b5;
+
+C5 = AA5\Ab5;
+
+r5 = b5-A5*C5;
+
+RMSE = norm(r5,2)/sqrt(4);
+
+
 
 %% Problem 3
+
+fileID = fopen( [DIR 'CSCI4800HW8Output3.txt'], 'w');
+
+% Create A
+clear A2
+A2 = [1 2; 
+      2 2];
+
+% Use Mod'd Gram-Schimdt
+[Q2,R2] = mgs(A2);
+
+% Check for accuracy:
+check1 = norm(Q2'*Q2 - eye(2), 2);
+check2 = norm(A2 - Q2*R2, 2);
+
+fprintf(fileID, 'Results for Problem 3: \r\n\r\n');
+fprintf(fileID, 'Results for first A from part (a): \r\n');
+fprintf(fileID, '||A - QR||(2) = %2f \r\n', check2);
+fprintf(fileID, '||Q^(T)*Q-I||(2) = %2f \r\n', check1);
+
+% Create A
+clear A3
+A3 = [4 8 1; 
+      0 2 -2;
+      3 6 7];
+
+% Use Mod'd Gram-Schimdt
+[Q3,R3] = mgs(A3);
+
+% Check for accuracy:
+check1 = norm(Q3'*Q3 - eye(3), 2);
+check2 = norm(A3 - Q3*R3, 2);
+
+fprintf(fileID, 'Results for second A from part (a): \r\n');
+fprintf(fileID, '||A - QR||(2) = %2f \r\n', check2);
+fprintf(fileID, '||Q^(T)*Q-I||(2) = %2f \r\n', check1);
+
+fclose(fileID);
 
 
 %% Problem 4
