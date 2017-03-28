@@ -155,7 +155,7 @@ RMSE = norm(r4,2)/sqrt(6);
 
 % Part b
 A5 = [1 1 1 1;
-      -2 0 1 2]';
+    -2 0 1 2]';
 b5 = [log(1) log(2) log(2) log(5)]';
 
 AA5 = A5'*A5;
@@ -175,8 +175,8 @@ fileID = fopen( [DIR 'CSCI4800HW8Output3.txt'], 'w');
 
 % Create A
 clear A2
-A2 = [1 2; 
-      2 2];
+A2 = [1 2;
+    2 2];
 
 % Use Mod'd Gram-Schimdt
 [Q2,R2] = mgs(A2);
@@ -192,9 +192,9 @@ fprintf(fileID, '||Q^(T)*Q-I||(2) = %2f \r\n', check1);
 
 % Create A
 clear A3
-A3 = [4 8 1; 
-      0 2 -2;
-      3 6 7];
+A3 = [4 8 1;
+    0 2 -2;
+    3 6 7];
 
 % Use Mod'd Gram-Schimdt
 [Q3,R3] = mgs(A3);
@@ -212,3 +212,133 @@ fclose(fileID);
 
 %% Problem 4
 
+% Part a
+clear x
+
+fileID = fopen( [DIR 'CSCI4800HW8Output4.txt'], 'w');
+fprintf(fileID, 'Results for Problem 4: \r\n\r\n');
+fprintf(fileID, 'Results for part (a) (copy-pasted from Command Window): \r\n\r\n');
+
+% Declare constants from given
+t0 = 1950;
+tol = 10^-5;
+MaxIt = 20;
+x0 = [50 0.1]';
+t = [1950 1955 1960 1965 1970 1975 1980]';
+cars_mil = [53.05 73.04 98.31 139.78 193.48 260.20 320.29]';
+m = length(t);
+
+% Create residual functions and jacobian for residual
+for i=1:m
+    r{i} = @(x) {cars_mil(i)-x(1)*exp((x(2)*(t(i)-t0)))};
+    rx{i,:} = @(x) [-exp(x(2)*(t(i)-t0)) , -x(1)*(t(i)-t0)*exp(x(2)*(t(i)-t0))];
+end
+
+% Evaluate with gaussNewton; print results
+C = gaussNewton(r,rx,x0,tol,MaxIt);
+C_book = [54.03, 0.06152];
+for i = 1:length(C)
+    fprintf(fileID, 'C(%1i) = %3.4f\n', i, C(i));
+    Per_Diff(i) = 100*abs((C(i)-C_book(i))/C_book(i));
+    fprintf(fileID,...
+        'Percent Difference WRT to book (%3.4f) = %3.2f%%\n',...
+        C_book(i), Per_Diff(i));
+end
+
+% Calculate and print RMSE
+for i = 1:m
+    Res(i,:) = [r{i}(C)];
+end
+RMSE = norm(cell2mat(Res), 2)/sqrt(m);
+RMSE_book = 9.56;
+fprintf(fileID, 'RMSE = %3.4f\n', RMSE);
+Per_Diff2 = 100*abs((RMSE-RMSE_book)/RMSE_book);
+fprintf(fileID, ...
+    'Percent Difference WRT to book (%3.4f) = %3.2f%%\n',...
+        RMSE_book, Per_Diff2);
+
+% Prep for plotting
+time_min = min(t);
+time_max = max(t);
+evals = 100;
+d_time = (time_max-time_min)/evals;
+for i = 1:evals+1;
+    time(i) = time_min+(i-1)*d_time;
+    LSA(i) = C(1)*exp(C(2)*(time(i)-t0));
+end
+
+figure
+plot(t, cars_mil, '+')
+hold on 
+title('World Automobile Supply')
+xlabel('Year')
+ylabel('Millions of Automobiles')
+axis([1940 1990 0 400])
+plot(time, LSA, ':')
+legend('Given Data','Least Squares Approximation','Location','SouthEast')
+print( [DIR 'CSCI4800HW8plot4a'], '-djpeg');
+
+
+% Part b
+clear x t r rx C LSA
+
+fprintf(fileID, 'Results for part (b) (copy-pasted from Command Window): \r\n\r\n');
+
+% Declare constants from given
+x0 = [5,-0.1]';
+conce = [8 12.3 15.5 16.8 17.1 15.8 15.2 14.0]';
+m = length(conce);
+
+% Create residual functions and jacobian for residual
+for i=1:m
+    t(i) = i;
+    r{i} = @(x) {conce(i)-x(1)*t(i)*exp((x(2)*t(i)))};
+    rx{i,:} = @(x) [-t(i)*exp(x(2)*t(i)) , -x(1)*(t(i))^(2)*exp(x(2)*t(i))];
+end
+
+% Evaluate with gaussNewton; print results
+C = gaussNewton(r,rx,x0,tol,MaxIt);
+C_book = [9.77, -0.215];
+for i = 1:length(C)
+    fprintf(fileID, 'C(%1i) = %3.4f\n', i, C(i));
+    Per_Diff(i) = 100*abs((C(i)-C_book(i))/C_book(i));
+    fprintf(fileID,...
+        'Percent Difference WRT to book (%3.4f) = %3.2f%%\n',...
+        C_book(i), Per_Diff(i));
+end
+
+% Calculate and print RMSE
+for i = 1:m
+    Res(i,:) = [r{i}(C)];
+end
+RMSE = norm(cell2mat(Res), 2)/sqrt(m);
+%RMSE_book = 9.56; % No RMSE presented in text
+fprintf(fileID, 'RMSE = %3.4f\n', RMSE);
+%Per_Diff2 = 100*abs((RMSE-RMSE_book)/RMSE_book);
+%fprintf(fileID, ...
+%'Percent Difference WRT to book (%3.4f) = %3.2f%%\n',...
+%       RMSE_book, Per_Diff2);
+fprintf(fileID, 'No RMSE presented in the text to compare to.');
+
+% Prep for plotting
+time_min = min(t);
+time_max = max(t);
+evals = 100;
+d_time = (time_max-time_min)/evals;
+for i = 1:evals+1;
+    time(i) = time_min+(i-1)*d_time;
+    LSA(i) = C(1)*(time(i))*exp(C(2)*time(i));
+end
+
+figure
+plot(t, conce, '+')
+hold on 
+title('Drug Concentration in Blood')
+xlabel('Hour')
+ylabel('Concentration [ng/ml]')
+axis([0 10 0 20])
+plot(time, LSA, ':')
+legend('Given Data','Least Squares Approximation','Location','SouthEast')
+print( [DIR 'CSCI4800HW8plot4b'], '-djpeg');
+
+fclose(fileID);
