@@ -95,7 +95,7 @@ for n = 1:10
   Error(n) = int(n) - I(n);
   fprintf(fileID, 'Error = %f.\r\n',Error(n));
   if (n>1)
-    fprintf(fileID, 'Error Ratio = %f.\r\n',Error(n)/Error(n-1));
+    fprintf(fileID, 'Error Ratio = %f.\r\n',Error(n-1)/Error(n));
   end
   fprintf(fileID,'\r\n');
 end
