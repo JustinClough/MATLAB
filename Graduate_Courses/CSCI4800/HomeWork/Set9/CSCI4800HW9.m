@@ -64,11 +64,41 @@ fileID = fopen( [DIR 'CSCI4800HW9Output3.txt'], 'w');
 fprintf(fileID, 'Results for Problem 3:\r\n\r\n');
 
 
+% Declare given function and bounds
+f = @(x) (1+x+x^2+x^3);
+F = @(x) (x+x^2/2+x^3/3+x^4/4);
+a = 0;
+b = 1;
 
+I = compositeSimpson(f,a,b,4);
+I_exact = F(b) - F(a);
 
+fprintf(fileID, 'Part a): \r\n');
+fprintf(fileID, 'Value from compositeSimpson(...) = %f.\r\n',I);
+fprintf(fileID, 'Value from Exact Integration = %f.\r\n', I_exact);
+fprintf(fileID, 'Difference = %f.\r\n', I_exact-I);
+clear I f F;
 
+% Declare given function and bounds
+f = @(x) (exp(sin(x.^2)));
+a = 0;
+b = pi;
 
+fprintf(fileID, '\r\nPart b): \r\n');
+% Loop through solution sets
+for n = 1:10
+  m = 2^n;
+  I(n) = compositeSimpson(f,a,b,m);
+  fprintf(fileID, 'm = %5.1f.\r\n',m);
+  fprintf(fileID, 'Value from compositeSimpson(...) = %f.\r\n',I(n));
+  int(n) = integral(f,a,b);
+  Error(n) = int(n) - I(n);
+  fprintf(fileID, 'Error = %f.\r\n',Error(n));
+  if (n>1)
+    fprintf(fileID, 'Error Ratio = %f.\r\n',Error(n)/Error(n-1));
+  end
+  fprintf(fileID,'\r\n');
+end
 
-
+% Close file
 fclose(fileID);
-
