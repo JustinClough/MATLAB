@@ -57,10 +57,9 @@ print( [DIR 'CSCI4800HW9plot1c'], '-djpeg');
 
 %% Problem 2
 
+% No Code Needed for Problem 2
 
 %% Problem 3
 
 
-
-%% Problem 4
 
