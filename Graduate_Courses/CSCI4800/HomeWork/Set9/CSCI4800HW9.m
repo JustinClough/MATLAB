@@ -10,7 +10,6 @@ close all
 DIR = 'Graduate_Courses/CSCI4800/HomeWork/Set9/';
 
 
-% fileID = fopen( [DIR 'CSCI4800HW8Output1c1.txt'], 'w');
 %% Problem 1
 
 % Define local functions
@@ -61,5 +60,15 @@ print( [DIR 'CSCI4800HW9plot1c'], '-djpeg');
 
 %% Problem 3
 
+fileID = fopen( [DIR 'CSCI4800HW9Output3.txt'], 'w');
+fprintf(fileID, 'Results for Problem 3:\r\n\r\n');
 
+
+
+
+
+
+
+
+fclose(fileID);
 
