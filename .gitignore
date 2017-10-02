@@ -19,3 +19,6 @@ Statisticals_Results.txt
 Graduate_Courses/CSCI4800/HomeWork/**/*.txt
 
 Graduate_Courses/CSCI4800/HomeWork/**/*.jpg
+
+#Ignore vim's swp files
+*.swp
