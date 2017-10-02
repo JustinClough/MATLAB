@@ -7,6 +7,15 @@
 
 % Prep workspace
 clear
-hold off
 
+%% Part a) 
+m = 5;
 
+x = zeros(1, m);
+for i = 1:m
+  x(i) = (i-1)/(m-1);
+end
+
+A = square_vandermonde( x);
+[Q, R] = qr( A);
+[Qc, Rc] = clgs( A);
