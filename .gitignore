@@ -22,3 +22,6 @@ Graduate_Courses/CSCI4800/HomeWork/**/*.jpg
 
 #Ignore vim's swp files
 *.swp
+
+#Ignore CSCI6800 Results
+CSCI6800**.txt
