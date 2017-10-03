@@ -18,4 +18,9 @@ end
 
 A = square_vandermonde( x);
 [Q, R] = qr( A);
+for i = 1:m
+  R(i,i) = abs( R(i,i));
+end
+
 [Qc, Rc] = clgs( A);
+[Qm, Rm] = mgs( A);
