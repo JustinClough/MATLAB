@@ -14,13 +14,13 @@ function [W, R] = house( A)
 % Get a measure of A
 [m,n] = size(A);
 
-% Copy A to R
-R = A;
+% Copy A to T
+T = A;
 
 for k = 1:n
 
   % Get subvector of column vector
-  x = R(k:m, k);
+  x = T(k:m, k);
 
   % Init direction vector
   e = zeros(size(x));
@@ -34,8 +34,17 @@ for k = 1:n
 
   W(k:m, k) = v;
 
-  R(k:m, k:n) = R(k:m, k:n) - 2 * v * v' * R(k:m, k:n);
+  T(k:m, k:n) = T(k:m, k:n) - 2 * v * v' * T(k:m, k:n);
 
 end
+
+% Return the upper square section
+if m> n
+  p = n;
+else
+  p = m;
+end
+
+R = T(1:p, 1:p);
 
 end
