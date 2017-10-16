@@ -13,8 +13,40 @@ fileID = fopen( [DIR 'CSCI6800HW5P5.txt'], 'w');
 %% Part a)
 fprintf( fileID, 'Results from Part a)\r\n');
 
+% Create A as a Vandermonde matrix
+m = 5;
+x = zeros( 1, m);
+for i = 1:m
+  x(i) = (i-1)/(m-1);
+end
+A = square_vandermonde( x);
+
+[W, Rh] = house( A);
+Qh = formQ( W);
+
+[Q, R] = qr( A);
+
+fprintf( fileID, 'A = \r\n');
+fprintf( fileID, [repmat('%f\t', 1, size(A,2)) '\n'], A);
+fprintf( fileID, 'Q = \r\n');
+fprintf( fileID, [repmat('%f\t', 1, size(Q,2)) '\n'], Q);
+fprintf( fileID, 'R = \r\n');
+fprintf( fileID, [repmat('%f\t', 1, size(R,2)) '\n'], R);
+fprintf( fileID, 'Qh = \r\n');
+fprintf( fileID, [repmat('%f\t', 1, size(Qh,2)) '\n'], Qh);
+fprintf( fileID, 'Rh = \r\n');
+fprintf( fileID, [repmat('%f\t', 1, size(Rh,2)) '\n'], Rh);
+fprintf( fileID, '|| A - QR ||_2 = %2f \r\n', norm( A - Q * R, 2));
+fprintf( fileID, '|| A - QhRh ||_2 = %2f \r\n', norm( A - Qh * Rh, 2));
+fprintf( fileID, '|| Q^(T)Q - I ||_2 = %2f \r\n', norm( Q'*Q - eye(m), 2));
+fprintf( fileID, '|| Qh^(T)Qh - I ||_2 = %2f \r\n', norm( Qh'*Qh - eye(m), 2));
+fprintf( fileID, '\r\n');
+
 %% Part b)
 fprintf( fileID, 'Results from Part b)\r\n');
+
+
+
 
 %% Clean up
 fclose( fileID);
