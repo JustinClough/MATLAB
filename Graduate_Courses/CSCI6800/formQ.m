@@ -12,15 +12,13 @@ function Q = formQ( W)
 
 [ m, n] = size( W);
 
-Qt = eye( m, n);
+Q = eye( m, n);
 
 for k = 1:n
   v = W(k:m, k);
   
-  Qt(k:m, k:n) = Qt(k:m, k:n) - 2 * v * v' * Qt(k:m, k:n);
+  Q(k:m, k:n) = Q(k:m, k:n) - 2 * v * v' * Q(k:m, k:n);
 
 end
-
-Q = Qt';
 
 end
