@@ -9,6 +9,33 @@
 %   the Householder reflector vectors.
 % R The upper triangular matrix.
 
-[W, R] = house( A)
+function [W, R] = house( A)
+
+% Get a measure of A
+[m,n] = size(A);
+
+% Copy A to R
+R = A;
+
+for k = 1:n
+
+  % Get subvector of column vector
+  x = R(k:m, k);
+
+  % Init direction vector
+  e = zeros(size(x));
+
+  % Set first direction component
+  e(1) = 1;
+  
+  v = x + sign(x(1)) * norm(x,2) * e;
+
+  v = v / norm(v, 2);
+
+  W(k:m, k) = v;
+
+  R(k:m, k:n) = R(k:m, k:n) - 2 * v * v' * R(k:m, k:n);
+
+end
 
 end
