@@ -3,21 +3,21 @@
 %% Inputs:
 % x      The x-axis values as a vector
 % y      The y-axis values as a vector
-% title  The plot's title. Also used as the filename.
-% xlabel The label for the x-axis.
-% ylabel The label for the y-axis.
+% Title  The plot's title. Also used as the filename.
+% XLabel The label for the x-axis.
+% YLabel The label for the y-axis.
 % DIR    The directory to save file to.
 %% Outputs:
 % a An error indicator.
 
-function a = PrintPlot( x, y, title, xlabel, ylabel, DIR);
+function a = PrintPlot( x, y, Title, XLabel, YLabel, DIR);
 
 figure
 plot( x, y);
 hold on
-title( title);
-xlabel( xlabel);
-ylabel( ylabel);
-print( [DIR title] '-dpdf');
+title( Title);
+xlabel( XLabel);
+ylabel( YLabel);
+print( [DIR Title], '-dpdf');
  
 end
