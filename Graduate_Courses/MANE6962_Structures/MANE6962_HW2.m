@@ -97,21 +97,46 @@ V = zeros( n, n);
 
 [V, Lambda] = eig( inv(Mass) * K);
 
-% Change from Lambda matrix to Omega Matrix
-Omega = zeros( n, n);
+% Change from Lambda matrix to Omega vector
+Omega = zeros( 1, n);
 for i = 1:n
-  Omega(i,i) = sqrt( Lambda(i,i));
+  Omega(i) = sqrt( Lambda(i,i));
 end
 clear i;
 
-% Scale the column vectors of V s.t. the last component is +1
+% Scale the column vectors of V s.t. largest component is +/-1
 for i = 1:n
-  tmp = V(n,i);
+  tmp = max(abs(V(:,i)));
   for j = 1:n
     V(j,i) = V(j,i) / tmp;
   end
 end
-clear i j;
+clear i j tmp;
+
+% Now sort frequencies with corresponding mode shapes from lowest to 
+% highest frequency
+[Omega, Perm] = sort( Omega);
+tmp = V;
+for i = 1:n
+  V(:,i) = tmp(:, Perm(i));
+end
+clear i Perm tmp;
+
+% Print frequencies and mode shapes
+Matrix2File( fileID, 'Frequencies [rad/sec]', Omega);
+Matrix2File( fileID, 'Mode Shapes (column vectors)', V);
+
+% Print Mode Shapes
+for i = 1:n
+  Title  = ['Center of Beam Segments: w = ' num2str(Omega(i)) '[rad/sec]'];
+  XLabel = 'Length Along Beam [Centimeter]';
+  YLabel = 'Transverse Displacement [Centimeter]';
+  Fname  = ['Mode_shape_' num2str(i)];
+  PrintPlot( 100*x, V(:,i), Title, XLabel, YLabel, DIR, Fname);
+  hold off
+end
+clear i;
+
 
 %% Clean up
 fclose( fileID);
