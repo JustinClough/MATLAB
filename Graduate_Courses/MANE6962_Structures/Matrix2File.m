@@ -12,7 +12,7 @@ function a = Matrix2File( fileID, Name, A)
 
 a = 0;
 fprintf( fileID, [Name ' = \r\n']);
-fprintf( fileID, [repmat('%f\t', 1, size(A,2)) '\n'], A);
+fprintf( fileID, [repmat('%22.15e\t', 1, size(A,2)) '\n'], A);
 fprintf( fileID, '\r\n');
 
 end
