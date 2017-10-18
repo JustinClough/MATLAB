@@ -8,6 +8,10 @@
 clear
 close all
 
+DIR = 'Graduate_Courses/MANE6962_Structures/';
+fileID = fopen( [DIR 'HW2.txt'], 'w');
+fprintf( fileID, 'Text based results are below:\r\n');
+
 %% Define Constants
 % SI units are used directly
 
@@ -78,5 +82,6 @@ end
 
 
 
-
+%% Clean up
+fclose( fileID);
 
