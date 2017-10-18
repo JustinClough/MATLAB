@@ -7,10 +7,11 @@
 % XLabel The label for the x-axis.
 % YLabel The label for the y-axis.
 % DIR    The directory to save file to.
+% Fname  The file name to save under.
 %% Outputs:
 % a An error indicator.
 
-function a = PrintPlot( x, y, Title, XLabel, YLabel, DIR);
+function a = PrintPlot( x, y, Title, XLabel, YLabel, DIR, Fname);
 
 figure
 plot( x, y);
@@ -18,6 +19,6 @@ hold on
 title( Title);
 xlabel( XLabel);
 ylabel( YLabel);
-print( [DIR Title], '-dpdf');
+print( [DIR Fname], '-dpdf');
  
 end
