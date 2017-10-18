@@ -57,10 +57,7 @@ end
 clear i;
 
 % Print Mass matrix to results file
-Matrix2File( fileID, 'Mass', Mass);
-fprintf( fileID, 'Mass = \r\n');
-fprintf( fileID, [repmat('%f\t', 1, size(Mass,2)) '\n'], Mass);
-fprintf( fileID, '\r\n');
+Matrix2File( fileID, 'Mass [KiloGrams]', Mass);
 
 %% Populate Stiffness Matrix
 % First construct compliance matrix
@@ -79,11 +76,42 @@ for i = 1:n
     S(i,j) = (1/ (6 * E * AMI)) * tmp;
   end
 end
+clear i j;
 
 % Print Compliance matrix to results file
-Matrix2File( fileID, 'Compliance', S);
+Matrix2File( fileID, 'Compliance [Meter/Newton]', S);
 
+% Invert to get a stiffness
+K = inv(S);
 
+% Print Stiffness matrix to results file
+Matrix2File( fileID, 'Stiffness [Newton/Meter]', K);
+
+%% Get Eigenvalues and Eigenvectors
+% Eigenvalues will represent the square of natural frequencies
+% in units of (radians/second)^2
+Lambda = zeros( n, n);
+
+% Eigenvectors will represent the relative modal shapes.
+V = zeros( n, n);
+
+[V, Lambda] = eig( inv(Mass) * K);
+
+% Change from Lambda matrix to Omega Matrix
+Omega = zeros( n, n);
+for i = 1:n
+  Omega(i,i) = sqrt( Lambda(i,i));
+end
+clear i;
+
+% Scale the column vectors of V s.t. the last component is +1
+for i = 1:n
+  tmp = V(n,i);
+  for j = 1:n
+    V(j,i) = V(j,i) / tmp;
+  end
+end
+clear i j;
 
 %% Clean up
 fclose( fileID);
