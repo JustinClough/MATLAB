@@ -56,6 +56,12 @@ for i = 1:n
 end
 clear i;
 
+% Print Mass matrix to results file
+Matrix2File( fileID, 'Mass', Mass);
+fprintf( fileID, 'Mass = \r\n');
+fprintf( fileID, [repmat('%f\t', 1, size(Mass,2)) '\n'], Mass);
+fprintf( fileID, '\r\n');
+
 %% Populate Stiffness Matrix
 % First construct compliance matrix
 
@@ -63,8 +69,6 @@ clear i;
 S = zeros( n, n);
 for i = 1:n
   for j = 1:n
-    i 
-    j
     if ( i <= j)
       Macaulay = 0;
     else
@@ -73,15 +77,13 @@ for i = 1:n
     tmp = Macaulay^(3) - (x(i))^(3) + 3 * x(j) * (x(i))^(2);
     % Scale by Effective rigidity
     S(i,j) = (1/ (6 * E * AMI)) * tmp;
-    tmp
-    S
-    pause
   end
 end
 
+% Print Compliance matrix to results file
+Matrix2File( fileID, 'Compliance', S);
 
 
 
 %% Clean up
 fclose( fileID);
-
