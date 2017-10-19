@@ -35,6 +35,9 @@ rho = 2.78 * (100)^(3) / 1000;
 % Number of beam segments 
 n = 5;
 
+% The damping ratio
+zeta = 0.01;
+
 %% Precaculate Utility Values
 % Area moment of interia (meters)^4
 AMI = w * t^(3) / 12;
@@ -143,7 +146,7 @@ clear i;
 % Create self-response matrix
 A = zeros( 2 * n, 2 * n);
 A( (1:n), (n+1: 2 * n) ) = eye( n, n);
-A( (n+1:2 * n), (1:n) ) = (-1) * inv(Mass) * K;
+A( (n+1:2 * n), (1:n) ) = (-1) * inv( Mass) * K;
 
 % Create forcing repsonse matrix
 B = zeros( 2 * n, 2 * n);
@@ -283,7 +286,7 @@ Title  = 'Centers of Beam Segments Response: Tip Force 1.2*w_1';
 XLabel = 'Time [seconds]';
 YLabel = 'Displacement [Centimeters]';
 Fname  = 'TipForce_12_No_Damping';
-PrintPlot( t, 500*y2_12, Title, XLabel, YLabel, DIR, Fname);
+PrintPlot( t, 100*y2_12, Title, XLabel, YLabel, DIR, Fname);
 legend( ...
   ['X(1) = ' num2str(100 * x(1)) '[cm]' ], ...
   ['X(2) = ' num2str(100 * x(2)) '[cm]' ], ...
@@ -294,13 +297,163 @@ legend( ...
 print( [DIR Fname], '-dpdf');
 
 %% Rebuild statespace system with Damping
+% C is the damping matrix
+C = 2 * zeta * diag(Omega) * Mass;
+
+% Create self-response matrix
+A                            = zeros( 2 * n, 2 * n);
+A( (1:n), (n+1: 2 * n) )     = eye( n, n);
+A( (n+1:2 * n), (1:n) )      = (-1) * inv( Mass) * K;
+A( (n+1:2 * n), (n+1:2 * n)) = (-1) * inv( Mass) * C;
+
+% Create forcing repsonse matrix
+B = zeros( 2 * n, 2 * n);
+B( (n+1:2*n), (1:n) ) = inv( Mass);
+
+% Create empty forcing function
+P = @(t) (zeros( 2*n, 1) * t);
+% Define the state space function
+dUdt = @(t,U) (B * P(t) + A * U);
 
 
 %% Repsonse for tip displacement of 1 inch, with Damping
+% Define Initial condition:
+disp = (-1) * metersPerInch;
+U0 = zeros( 2*n, 1);
+U0(1:n) = disp * V(:,1);
 
+% Define forcing state vector
+P = @(t) (zeros( 2*n, 1) * t);
+
+% Define the state space function
+dUdt = @(t,U) (B * P(t) + A * U);
+
+% A hardcoded time range to evauluate
+tspan = [0, 0.15];
+
+% U3 is the response from a tip displcament of 1 inch 
+%  and damping
+[t, U3] = ode45( dUdt, tspan, U0);
+
+y3 = U3(:, 1:n);
+Title  = 'Centers of Beam Segments Response with Damping: Tip Displacement 1 inch';
+XLabel = 'Time [seconds]';
+YLabel = 'Displacement [Centimeters]';
+Fname  = 'TipDisp_Damping';
+PrintPlot( t, 100*y3, Title, XLabel, YLabel, DIR, Fname);
+legend( ...
+  ['X(1) = ' num2str(100 * x(1)) '[cm]' ], ...
+  ['X(2) = ' num2str(100 * x(2)) '[cm]' ], ...
+  ['X(3) = ' num2str(100 * x(3)) '[cm]' ], ...
+  ['X(4) = ' num2str(100 * x(4)) '[cm]' ], ...
+  ['X(5) = ' num2str(100 * x(5)) '[cm]' ], ...
+  'Location', 'southoutside');
+print( [DIR Fname], '-dpdf');
 
 %% Responses for Forced tip, with Damping
+% Define Initial condition:
+U0 = zeros( 2*n, 1);
 
+% Define forcing state vector
+w = 0.9 * Omega(1);
+delta_tmp = zeros( 2*n, 1);
+delta_tmp(n) = 1;
+P = @(t) (delta_tmp * sin( w * t) );
+
+% Define the state space function
+dUdt = @(t,U) (B * P(t) + A * U);
+
+% A hardcoded time range to evauluate
+tspan = [0, 1.0];
+
+% U4_09 is the response from a tip force at 0.9 * omega_1
+%  and damping
+[t, U4_09] = ode45( dUdt, tspan, U0);
+
+y4_09 = U4_09(:, 1:n);
+Title  = 'Centers of Beam Segments Response with Damping: Tip Force 0.9*w_1';
+XLabel = 'Time [seconds]';
+YLabel = 'Displacement [Centimeters]';
+Fname  = 'TipForce_09_Damping';
+PrintPlot( t, 100*y4_09, Title, XLabel, YLabel, DIR, Fname);
+legend( ...
+  ['X(1) = ' num2str(100 * x(1)) '[cm]' ], ...
+  ['X(2) = ' num2str(100 * x(2)) '[cm]' ], ...
+  ['X(3) = ' num2str(100 * x(3)) '[cm]' ], ...
+  ['X(4) = ' num2str(100 * x(4)) '[cm]' ], ...
+  ['X(5) = ' num2str(100 * x(5)) '[cm]' ], ...
+  'Location', 'southoutside');
+print( [DIR Fname], '-dpdf');
+
+% Repeat for w = w_1
+% Define Initial condition:
+U0 = zeros( 2*n, 1);
+
+% Define forcing state vector
+w = 1.0 * Omega(1);
+delta_tmp = zeros( 2*n, 1);
+delta_tmp(n) = 1;
+P = @(t) (delta_tmp * sin( w * t) );
+
+% Define the state space function
+dUdt = @(t,U) (B * P(t) + A * U);
+
+% A hardcoded time range to evauluate
+tspan = [0, 1.0];
+
+% U4_10 is the response from a tip force at 1.0 * omega_1
+%  and damping
+[t, U4_10] = ode45( dUdt, tspan, U0);
+
+y4_10 = U4_10(:, 1:n);
+Title  = 'Centers of Beam Segments Response with Damping: Tip Force 1.0*w_1';
+XLabel = 'Time [seconds]';
+YLabel = 'Displacement [Centimeters]';
+Fname  = 'TipForce_10_Damping';
+PrintPlot( t, 100*y4_10, Title, XLabel, YLabel, DIR, Fname);
+legend( ...
+  ['X(1) = ' num2str(100 * x(1)) '[cm]' ], ...
+  ['X(2) = ' num2str(100 * x(2)) '[cm]' ], ...
+  ['X(3) = ' num2str(100 * x(3)) '[cm]' ], ...
+  ['X(4) = ' num2str(100 * x(4)) '[cm]' ], ...
+  ['X(5) = ' num2str(100 * x(5)) '[cm]' ], ...
+  'Location', 'southoutside');
+print( [DIR Fname], '-dpdf');
+
+% Repeat again for w = 1.2 * w1
+% Define Initial condition:
+U0 = zeros( 2*n, 1);
+
+% Define forcing state vector
+w = 1.2 * Omega(1);
+delta_tmp = zeros( 2*n, 1);
+delta_tmp(n) = 1;
+P = @(t) (delta_tmp * sin( w * t) );
+
+% Define the state space function
+dUdt = @(t,U) (B * P(t) + A * U);
+
+% A hardcoded time range to evauluate
+tspan = [0, 1.0];
+
+% U4_12 is the response from a tip force at 1.2 * omega_1
+%  and damping
+[t, U4_12] = ode45( dUdt, tspan, U0);
+
+y4_12 = U4_12(:, 1:n);
+Title  = 'Centers of Beam Segments Response with Damping: Tip Force 1.2*w_1';
+XLabel = 'Time [seconds]';
+YLabel = 'Displacement [Centimeters]';
+Fname  = 'TipForce_12_No_Damping';
+PrintPlot( t, 100*y4_12, Title, XLabel, YLabel, DIR, Fname);
+legend( ...
+  ['X(1) = ' num2str(100 * x(1)) '[cm]' ], ...
+  ['X(2) = ' num2str(100 * x(2)) '[cm]' ], ...
+  ['X(3) = ' num2str(100 * x(3)) '[cm]' ], ...
+  ['X(4) = ' num2str(100 * x(4)) '[cm]' ], ...
+  ['X(5) = ' num2str(100 * x(5)) '[cm]' ], ...
+  'Location', 'southoutside');
+print( [DIR Fname], '-dpdf');
 
 %% Clean up
 fclose( fileID);
