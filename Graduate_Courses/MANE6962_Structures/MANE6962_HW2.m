@@ -149,20 +149,21 @@ A( (n+1:2 * n), (1:n) ) = (-1) * inv(Mass) * K;
 B = zeros( 2 * n, 2 * n);
 B( (n+1:2*n), (1:n) ) = inv( Mass);
 
-%%
-%% WILL NEED TO REBUILD SYSTEM SOLONGAS P IS USED THIS WAY 
-%%
 % Create empty forcing function
-P = zeros( 2*n, 1);
+P = @(t) (zeros( 2*n, 1) * t);
 % Define the state space function
-dUdt = @(t,U) (B * P + A * U);
+dUdt = @(t,U) (B * P(t) + A * U);
 
 %% Response for tip displacement of 1 inch, No Damping
-disp = (1) * metersPerInch;
-P = zeros( 2*n, 1);
+% Define Initial condition:
+disp = (-1) * metersPerInch;
 U0 = zeros( 2*n, 1);
 U0(1:n) = disp * V(:,1);
 
+% Define forcing state vector
+P = @(t) (zeros( 2*n, 1) * t);
+
+% A hardcoded time range to evauluate
 tspan = [0, 0.25];
 
 % U1 is the response from a tip displcament of 1 inch 
