@@ -163,13 +163,15 @@ U0(1:n) = disp * V(:,1);
 % Define forcing state vector
 P = @(t) (zeros( 2*n, 1) * t);
 
+% Define the state space function
+dUdt = @(t,U) (B * P(t) + A * U);
+
 % A hardcoded time range to evauluate
 tspan = [0, 0.25];
 
 % U1 is the response from a tip displcament of 1 inch 
 %  and no damping
 [t, U1] = ode45( dUdt, tspan, U0);
-% clear P U0;
 
 y1 = U1(:, 1:n);
 Title  = 'Centers of Beam Segments Response: Tip Displacement 1 inch';
@@ -177,9 +179,119 @@ XLabel = 'Time [seconds]';
 YLabel = 'Displacement [Centimeters]';
 Fname  = 'TipDisp_No_Damping';
 PrintPlot( t, 100*y1, Title, XLabel, YLabel, DIR, Fname);
+legend( ...
+  ['X(1) = ' num2str(100 * x(1)) '[cm]' ], ...
+  ['X(2) = ' num2str(100 * x(2)) '[cm]' ], ...
+  ['X(3) = ' num2str(100 * x(3)) '[cm]' ], ...
+  ['X(4) = ' num2str(100 * x(4)) '[cm]' ], ...
+  ['X(5) = ' num2str(100 * x(5)) '[cm]' ], ...
+  'Location', 'southoutside');
+print( [DIR Fname], '-dpdf');
 
 %% Responses for Forced tip, No Damping
+% Define Initial condition:
+U0 = zeros( 2*n, 1);
 
+% Define forcing state vector
+w = 0.9 * Omega(1);
+delta_tmp = zeros( 2*n, 1);
+delta_tmp(n) = 1;
+P = @(t) (delta_tmp * sin( w * t) );
+
+% Define the state space function
+dUdt = @(t,U) (B * P(t) + A * U);
+
+% A hardcoded time range to evauluate
+tspan = [0, 1.0];
+
+% U2_09 is the response from a tip force at 0.9 * omega_1
+%  and no damping
+[t, U2_09] = ode45( dUdt, tspan, U0);
+
+y2_09 = U2_09(:, 1:n);
+Title  = 'Centers of Beam Segments Response: Tip Force 0.9*w_1';
+XLabel = 'Time [seconds]';
+YLabel = 'Displacement [Centimeters]';
+Fname  = 'TipForce_09_No_Damping';
+PrintPlot( t, 100*y2_09, Title, XLabel, YLabel, DIR, Fname);
+legend( ...
+  ['X(1) = ' num2str(100 * x(1)) '[cm]' ], ...
+  ['X(2) = ' num2str(100 * x(2)) '[cm]' ], ...
+  ['X(3) = ' num2str(100 * x(3)) '[cm]' ], ...
+  ['X(4) = ' num2str(100 * x(4)) '[cm]' ], ...
+  ['X(5) = ' num2str(100 * x(5)) '[cm]' ], ...
+  'Location', 'southoutside');
+print( [DIR Fname], '-dpdf');
+
+% Repeat for w = w_1
+% Define Initial condition:
+U0 = zeros( 2*n, 1);
+
+% Define forcing state vector
+w = 1.0 * Omega(1);
+delta_tmp = zeros( 2*n, 1);
+delta_tmp(n) = 1;
+P = @(t) (delta_tmp * sin( w * t) );
+
+% Define the state space function
+dUdt = @(t,U) (B * P(t) + A * U);
+
+% A hardcoded time range to evauluate
+tspan = [0, 1.0];
+
+% U2_10 is the response from a tip force at 1.0 * omega_1
+%  and no damping
+[t, U2_10] = ode45( dUdt, tspan, U0);
+
+y2_10 = U2_10(:, 1:n);
+Title  = 'Centers of Beam Segments Response: Tip Force 1.0*w_1';
+XLabel = 'Time [seconds]';
+YLabel = 'Displacement [Centimeters]';
+Fname  = 'TipForce_10_No_Damping';
+PrintPlot( t, 100*y2_10, Title, XLabel, YLabel, DIR, Fname);
+legend( ...
+  ['X(1) = ' num2str(100 * x(1)) '[cm]' ], ...
+  ['X(2) = ' num2str(100 * x(2)) '[cm]' ], ...
+  ['X(3) = ' num2str(100 * x(3)) '[cm]' ], ...
+  ['X(4) = ' num2str(100 * x(4)) '[cm]' ], ...
+  ['X(5) = ' num2str(100 * x(5)) '[cm]' ], ...
+  'Location', 'southoutside');
+print( [DIR Fname], '-dpdf');
+
+% Repeat again for w = 1.2 * w1
+% Define Initial condition:
+U0 = zeros( 2*n, 1);
+
+% Define forcing state vector
+w = 1.2 * Omega(1);
+delta_tmp = zeros( 2*n, 1);
+delta_tmp(n) = 1;
+P = @(t) (delta_tmp * sin( w * t) );
+
+% Define the state space function
+dUdt = @(t,U) (B * P(t) + A * U);
+
+% A hardcoded time range to evauluate
+tspan = [0, 1.0];
+
+% U2_12 is the response from a tip force at 1.2 * omega_1
+%  and no damping
+[t, U2_12] = ode45( dUdt, tspan, U0);
+
+y2_12 = U2_12(:, 1:n);
+Title  = 'Centers of Beam Segments Response: Tip Force 1.2*w_1';
+XLabel = 'Time [seconds]';
+YLabel = 'Displacement [Centimeters]';
+Fname  = 'TipForce_12_No_Damping';
+PrintPlot( t, 500*y2_12, Title, XLabel, YLabel, DIR, Fname);
+legend( ...
+  ['X(1) = ' num2str(100 * x(1)) '[cm]' ], ...
+  ['X(2) = ' num2str(100 * x(2)) '[cm]' ], ...
+  ['X(3) = ' num2str(100 * x(3)) '[cm]' ], ...
+  ['X(4) = ' num2str(100 * x(4)) '[cm]' ], ...
+  ['X(5) = ' num2str(100 * x(5)) '[cm]' ], ...
+  'Location', 'southoutside');
+print( [DIR Fname], '-dpdf');
 
 %% Rebuild statespace system with Damping
 
