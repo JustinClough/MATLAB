@@ -444,7 +444,7 @@ y4_12 = U4_12(:, 1:n);
 Title  = 'Centers of Beam Segments Response with Damping: Tip Force 1.2*w_1';
 XLabel = 'Time [seconds]';
 YLabel = 'Displacement [Centimeters]';
-Fname  = 'TipForce_12_No_Damping';
+Fname  = 'TipForce_12_Damping';
 PrintPlot( t, 100*y4_12, Title, XLabel, YLabel, DIR, Fname);
 legend( ...
   ['X(1) = ' num2str(100 * x(1)) '[cm]' ], ...
