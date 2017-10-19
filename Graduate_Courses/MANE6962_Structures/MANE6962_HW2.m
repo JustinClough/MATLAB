@@ -14,13 +14,14 @@ fprintf( fileID, 'Text based results are below:\r\n');
 
 %% Define Constants
 % SI units are used directly
+metersPerInch = 0.0254;
 
 % Lengths in meters
-L = 15 * (0.0254);
+L = 15 * metersPerInch;
   % 15 inches
-w = 1 * (0.0254);
+w = 1 * metersPerInch;
   % 1 inch
-t = 0.125 * ( 0.0254);
+t = 0.125 * metersPerInch;
   % 0.125 inch
 
 % Young's modulus in Pascals (Newtons per Square Meter)
@@ -136,6 +137,39 @@ for i = 1:n
   hold off
 end
 clear i;
+
+%% Build StateSpace verision of system
+
+% Create self-response matrix
+A = zeros( 2 * n, 2 * n);
+A( (1:n), (n+1: 2 * n) ) = eye( n, n);
+A( (n+1:2 * n), (1:n) ) = (-1) * inv(Mass) * K;
+
+% Create forcing repsonse matrix
+B = zeros( 2 * n, 2 * n);
+B( (n+1:2*n), (1:n) ) = inv( Mass);
+
+% Define the state space function
+dUdt = @(t,U) (B * P + A * U);
+
+%% Repsonse for tip displacement of 1 inch
+disp = (1) * metersPerInch;
+P = zeros( 2*n, 1);
+U0 = zeros( 2*n, 1);
+U0(1:n) = disp * V(:,1);
+
+tspan = [0, 0.25];
+
+% U1 is the response from a tip displcament of 1 inch 
+%  and no damping
+[t, U1] = ode45( dUdt, tspan, U0);
+y1 = U1(:, 1:n);
+Title  = 'Centers of Beam Segments Response: Tip Displacement 1 inch';
+XLabel = 'Time [seconds]';
+YLabel = 'Displacement [Centimeters]';
+Fname  = 'TipDisp_No_Damping';
+PrintPlot( t, 100*y1, Title, XLabel, YLabel, DIR, Fname);
+
 
 
 %% Clean up
