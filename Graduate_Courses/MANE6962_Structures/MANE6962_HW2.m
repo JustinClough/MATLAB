@@ -149,10 +149,15 @@ A( (n+1:2 * n), (1:n) ) = (-1) * inv(Mass) * K;
 B = zeros( 2 * n, 2 * n);
 B( (n+1:2*n), (1:n) ) = inv( Mass);
 
+%%
+%% WILL NEED TO REBUILD SYSTEM SOLONGAS P IS USED THIS WAY 
+%%
+% Create empty forcing function
+P = zeros( 2*n, 1);
 % Define the state space function
 dUdt = @(t,U) (B * P + A * U);
 
-%% Repsonse for tip displacement of 1 inch
+%% Response for tip displacement of 1 inch, No Damping
 disp = (1) * metersPerInch;
 P = zeros( 2*n, 1);
 U0 = zeros( 2*n, 1);
@@ -163,6 +168,8 @@ tspan = [0, 0.25];
 % U1 is the response from a tip displcament of 1 inch 
 %  and no damping
 [t, U1] = ode45( dUdt, tspan, U0);
+% clear P U0;
+
 y1 = U1(:, 1:n);
 Title  = 'Centers of Beam Segments Response: Tip Displacement 1 inch';
 XLabel = 'Time [seconds]';
@@ -170,6 +177,16 @@ YLabel = 'Displacement [Centimeters]';
 Fname  = 'TipDisp_No_Damping';
 PrintPlot( t, 100*y1, Title, XLabel, YLabel, DIR, Fname);
 
+%% Responses for Forced tip, No Damping
+
+
+%% Rebuild statespace system with Damping
+
+
+%% Repsonse for tip displacement of 1 inch, with Damping
+
+
+%% Responses for Forced tip, with Damping
 
 
 %% Clean up
