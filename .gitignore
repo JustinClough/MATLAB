@@ -26,5 +26,8 @@ Graduate_Courses/CSCI4800/HomeWork/**/*.jpg
 #Ignore CSCI6800 Results
 CSCI6800**.txt
 
-#Ignore MANE** Results
-**/MANE**/**.txt
+#Ignore results as pdf's
+**.pdf
+
+#Ignore MANE6962_Structures results
+Graduate_Courses/MANE6962_Structures/*.txt
