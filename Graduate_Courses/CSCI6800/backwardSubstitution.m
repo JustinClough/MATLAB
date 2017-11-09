@@ -1,4 +1,4 @@
-%% Function forwardElimnation
+%% Function backwardSubstitution
 % Finds the solution to x = Uy where U
 % is a upper diagonal matrix.
 %% Inputs:
@@ -24,4 +24,6 @@ for I = 1:n
         tmp = tmp - U(i,j)*x(j);
     end
     x(i) = tmp/U(i,i);
+end
+
 end
