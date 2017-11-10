@@ -1,5 +1,5 @@
 %% Function backwardSubstitution
-% Finds the solution to x = Uy where U
+% Finds the solution to Ux = y where U
 % is a upper diagonal matrix.
 %% Inputs:
 % U The upper diagonal matrix.
