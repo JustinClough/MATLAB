@@ -1,5 +1,5 @@
 %% Function forwardElimnation
-% Finds the solution to y = Lb where L
+% Finds the solution to Ly = b where L
 % is a lower diagonal matrix.
 %% Inputs:
 % L The lower diagonal matrix.
