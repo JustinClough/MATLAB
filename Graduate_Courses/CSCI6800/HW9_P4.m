@@ -8,14 +8,25 @@
 %% Prep Workspace
 clear
 close all
+DIR = 'Graduate_Courses/CSCI6800/' ;
+fileID = fopen( [DIR 'CSCI6800HW9P4.txt'], 'w');
 
 %% Build System, Components
 m = 200;
 w = 1.5;
+tol = 10^(-5);
 [A, x, b] = build_hw8_p5( m);
 
-Ej   = jacobi_error( A);
-Egs  = GS_error( A);
-Esor = SOR_error( A, w);
+%% Get Errors
+Ej   = jacobi_error( A, b, tol);
+Egs  = GS_error( A, b, tol);
+Esor = SOR_error( A, b, w, tol);
 
-plot( 
+%% Plot solution
+plot( Ej)
+plot( Egs)
+plot( Esor)
+xlabel( 'Iteration Number')
+ylabel( 'Error')
+title( 'Efficiency of Iterative Methods')
+print( [DIR 'CSCI6800HW9_P4_Plot'], '-dpdf');
