@@ -9,5 +9,17 @@
 
 function sol = jacobi_step( old, A, b)
 
+m = length( b);
+sol = zeros( m, 1);
+
+for i = 1:m
+  Ax = 0;
+  for j = 1:m
+    if j ~= i
+      Ax = Ax + A( i, j) * old( j);
+    end % if
+  end % for j
+  sol( i) = (-Ax + b(i) ) / A( i, i);
+end % for i
 
 end
