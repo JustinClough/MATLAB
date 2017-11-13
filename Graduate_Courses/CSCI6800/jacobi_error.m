@@ -20,9 +20,9 @@ f = zeros( m, 1);
 iter = 1;
 E(1) = tol * 2;
 while E(iter) > tol
-  iter = iter + 1;
   f = jacobi_step( f, A, b);
-  E(iter) = p5_get_error( f);
+  iter = iter + 1;
+  E( iter) = p5_get_error( f);
 end % while
 
 end
