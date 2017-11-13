@@ -5,7 +5,7 @@
 % A The stiffness matrix.
 % b The forcing vector.
 % tol The solution tolerance.
-%% Outpus:
+%% Outputs:
 % E The error at each iteration.
 
 function E = jacobi_error( A, b, tol)
