@@ -7,14 +7,23 @@
 
 function e = p5_get_error( f)
 
-e = 0;
 m = length( f);
+dx = pi / (m+1);
 
-for i = 1: m
-  x = i * pi / (m+1);
-  e = e + (f(i) - cos( x))^2;
+e = 0;
+j = 0;
+for i = 1: m+2
+  x(i) = (i-1) * dx;
+  if (i~=1) && (i~=m+2)
+    j = j+1;
+    xf(j) = j* dx;
+    diff(j) = f(j) - cos( x(i));
+    e = e + (diff(j)^2);
+  end
 end
 
-e = sqrt( e);
+plot( diff)
+drawnow
 
+e = sqrt( e*dx);
 end
