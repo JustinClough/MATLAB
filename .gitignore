@@ -25,6 +25,7 @@ Graduate_Courses/CSCI4800/HomeWork/**/*.jpg
 
 #Ignore CSCI6800 Results
 CSCI6800**.txt
+**.txt
 
 #Ignore results as pdf's
 **.pdf
