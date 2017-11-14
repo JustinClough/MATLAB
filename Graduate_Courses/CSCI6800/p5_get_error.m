@@ -22,8 +22,5 @@ for i = 1: m+2
   end
 end
 
-plot( diff)
-drawnow
-
 e = sqrt( e*dx);
 end
