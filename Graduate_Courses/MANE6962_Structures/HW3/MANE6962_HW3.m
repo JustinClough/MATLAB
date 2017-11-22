@@ -42,10 +42,51 @@ zeta = 0.01;
 % Area moment of interia (meters)^4
 AMI = w * t^(3) / 12;
 
+% Number of Elements
+n_el = n;
+
+% Number of Nodes
+n_n = n_el + 1;
+
+% Number of Degrees of Freedom
+n_dof = (n_n) * 2;
+
 % Array of beam segment center locations
 centers = zeros( 1, n);
 for i = 1:n
   centers(i) = (i - 1) * (L/n) + (L / (2 * n) );
 end
 clear i;
+
+dof_loc = zeros( 1, n_n);
+for i = 1:n_n
+  dof_loc(i) = (i - 1) * (L/n_n);
+end
+clear i;
+
+%% Populate Global Mass Matrix
+M_g = zeros( n_dof, n_dof);
+
+% Assemble global unreduced mass matrix from elemental
+for i = 1:n_el
+  % I and J are temporary 'top' and 'bottom' indexing values
+  I = (i * 2) - 1;
+  J = (i * 2) + 2;
+  % Assembly is done by summing the elemental contributions
+  %   into the global mass matrix
+  M_g( I:J, I:J) = M_g( I:J, I:J) ...
+    + beam_elemental_mass( i, n_el, wb, wt, L, rho);
+end
+clear i
+
+%% note:
+% To generalize the construction, material-like values, such
+% as area density and AMI will need to be position-(or 
+% elemental-) dependent calls instead of a precomputed 
+% static value.
+
+
+
+
+
 
