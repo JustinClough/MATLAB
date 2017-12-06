@@ -21,6 +21,9 @@ for k = 1: (m-2)
   v = sign( x(1)) * norm( x, 2) * e + x;A
   v = v / norm( v, 2);
 
+  A( k+1:m, k:m) = A( k+1:m, k:m) - 2 * v * (v' * A( k+1:m, k:m));
+  A( 1:m, k+1:m) = A( 1:m, k+1:m) - 2 * ( A( 1:m, k+1:m) * v) * v';
+
 end
 
 end
