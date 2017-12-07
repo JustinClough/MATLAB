@@ -5,28 +5,29 @@
 % A The matrix to transform.
 %% Outputs:
 % W The collection of Householder vectors.
-% H The resulting Hessenber form.
+% H The resulting Hessenberg form.
 
 function [W, H] = hessenberg( A)
 
-[m, n] = size( A)
+[m, n] = size( A);
 if (m ~=n)
   error( 'Passed Matrix A not square');
 end
 
+H = A;
 W = zeros( m, m);
 
 for k = 1: (m-2)
-  x = A( k+1:m, k);
+  x = H( k+1:m, k);
   e = zeros( size(x));
   e(1) = 1;
-  v = sign( x(1)) * norm( x, 2) * e + x;A
+  v = sign( x(1)) * norm( x, 2) * e + x;
   v = v / norm( v, 2);
 
-  W(:,k) = v;
+  W( k+1:m,k) = v;
 
-  A( k+1:m, k:m) = A( k+1:m, k:m) - 2 * v * (v' * A( k+1:m, k:m));
-  A( 1:m, k+1:m) = A( 1:m, k+1:m) - 2 * ( A( 1:m, k+1:m) * v) * v';
+  H( k+1:m, k:m) = H( k+1:m, k:m) - 2 * v * (v' * H( k+1:m, k:m));
+  H( 1:m, k+1:m) = H( 1:m, k+1:m) - 2 * ( H( 1:m, k+1:m) * v) * v';
 
 end
 
