@@ -10,5 +10,22 @@
 
 function lambda = RayleighQuot( A, mu, tol)
 
+[m, n] = size( A);
+
+v = InverseIter( A, mu, tol);
+new = v' * A * v;
+
+e = tol * 2;
+while e > tol
+  old = new;
+  B = A - old * eye( m,n);
+  w = B \ v;
+  v = w / norm( w, 2);
+  new = v' * A * v
+
+  e = abs( new - old);
+
+end
+lambda = new;
 
 end
