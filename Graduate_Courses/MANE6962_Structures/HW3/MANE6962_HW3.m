@@ -317,7 +317,7 @@ for i = 1:n_sof
   Title  = ['Change of Frequency Number ' num2str(i) ' WRT Lumped mass Location'];
   XLabel = 'Position of Mass';
   YLabel = 'Frequency [Radians/Second]';
-  Fname  = 'Freq_Lump';
+  Fname  = ['Freq_Lump' num2str(i)];
   x = dof_loc( 2:length( dof_loc));
   PrintPlot( x, Freqs(i,:), Title, XLabel, YLabel, DIR, Fname);
   hold off
