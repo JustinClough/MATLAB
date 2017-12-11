@@ -21,7 +21,7 @@ while e > tol
   B = A - old * eye( m,n);
   w = B \ v;
   v = w / norm( w, 2);
-  new = v' * A * v
+  new = v' * A * v;
 
   e = abs( new - old);
 
