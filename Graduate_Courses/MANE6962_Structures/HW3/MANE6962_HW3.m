@@ -389,16 +389,15 @@ clear Lim V;
 % A hardcoded time range to evauluate
 tspan = [0, 1.0];
 
-zetaMax = 0.25;
-zetaMin = 0.01;
-n_dZeta = 10;
+zetaMax = 0.009;
+zetaMin = 0.001;
+n_dZeta = 5;
 dZeta = (zetaMax - zetaMin) / n_dZeta;
 
 wMax = 1.25 * Omega_u(1);
 wMin = 0.50 * Omega_u(1);
-n_dw = 50;
+n_dw = 10;
 dw   = (wMax - wMin) / n_dw;
-W = zeros( n_dZeta, n_dw);
 for i = 1: n_dZeta
   zeta(i) = zetaMin + (i-1) * dZeta;
   C = 2 * zeta(i) * diag(Omega_u) * M_u;
@@ -408,7 +407,7 @@ for i = 1: n_dZeta
   delta_tmp( n_sof - 1) = 1;
 
   for j = 1: n_dw
-    W(j) = wMin + (i-1) * dw;
+    W(j) = wMin + (j-1) * dw;
     P = @(t) (delta_tmp * sin( W(j) * t) );
 
     % Self Response matrix
@@ -427,26 +426,22 @@ for i = 1: n_dZeta
     [t, Usol] = ode45( dUdt, tspan, U0);
     Response(i,j) = max( abs( Usol( :, n_el)));
   end
+  plot( W(:), Response(i,:));
+  hold on
 end
 clear i;
 
-Title  = 'Tip Response to Force, Damping';
-XLabel = 'Forcing Frequency [Radians/Second]';
-YLabel = 'Tip Response [Centimeters]';
-Fname  = 'Damping_Response';
-PrintPlot( W, Response, Title, XLabel, YLabel, DIR, Fname);
+title('Tip Response to Force, Damping');
+xlabel('Forcing Frequency [Radians/Second]');
+ylabel('Tip Response [Centimeters]');
 legend( ...
   ['Zeta(1)  = ' num2str(zeta(1)) ], ...
   ['Zeta(2)  = ' num2str(zeta(2)) ], ...
   ['Zeta(3)  = ' num2str(zeta(3)) ], ...
   ['Zeta(4)  = ' num2str(zeta(4)) ], ...
   ['Zeta(5)  = ' num2str(zeta(5)) ], ...
-  ['Zeta(6)  = ' num2str(zeta(6)) ], ...
-  ['Zeta(7)  = ' num2str(zeta(7)) ], ...
-  ['Zeta(8)  = ' num2str(zeta(8)) ], ...
-  ['Zeta(9)  = ' num2str(zeta(9)) ], ...
-  ['Zeta(10) = ' num2str(zeta(10)) ], ...
   'Location', 'southoutside');
+Fname  = 'Damping_Response';
 print( [DIR Fname], '-dpdf');
 hold off
 
