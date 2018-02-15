@@ -271,7 +271,14 @@ clear i;
 %% Comparison between Uniform, Tapered, and Exact Solution
 % Compare Uniform beam results to exact solution
 for i = 1:n_el
-  betaL = pi * ( i - 1/2)^2;
+  % Hardcoded values from the analytical solution
+  if i == 1
+    betaL = pi * 0.597;
+  elseif i == 2
+    betaL = pi * 1.49;
+  else
+    betaL = pi * ( i - 1/2)^2;
+  end
   top = E * AMI_u( i);
   bot = rho * Thick_u(i) * w * L^4;
   we(i) = betaL^2 * sqrt( top/ bot);
